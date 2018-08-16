@@ -15,8 +15,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="F-Droid" href="f-droid.html" />
-    <link rel="prev" title="OpenProject" href="openproject.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -158,6 +156,26 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </div>
 <div class="section" id="customization">
 <h2>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h2>
+<p>Here some customization that we can do to our Nextcloud instance.</p>
+<div class="section" id="pretty-urls">
+<h3>Pretty URLs<a class="headerlink" href="#pretty-urls" title="Permalink to this headline">¶</a></h3>
+<p>Pretty URLs remove the <code class="docutils literal notranslate"><span class="pre">index.php</span></code>-part in all Nextcloud URLs, for example in sharing links like <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ</span></code>, making URLs shorter and thus prettier.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mod_env</span></code> and <code class="docutils literal notranslate"><span class="pre">mod_rewrite</span></code> must be installed on your webserver and the <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> must be writable by the HTTP user. Then you can set  two variables in the <code class="docutils literal notranslate"><span class="pre">config.php</span></code>. If your setup is available on <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud</span></code> do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org/nextcloud&#39;</span><span class="p">,</span>
+<span class="s1">&#39;htaccess.RewriteBase&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/nextcloud&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>If it isn’t installed in a subfolder.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org&#39;</span><span class="p">,</span>
+<span class="s1">&#39;htaccess.RewriteBase&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Finally run this occ-command to update your .htaccess file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">php</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">/</span><span class="n">occ</span> <span class="n">maintenance</span><span class="p">:</span><span class="n">update</span><span class="p">:</span><span class="n">htaccess</span>
+</pre></div>
+</div>
+<p>After each update, these changes are automatically applied to the .htaccess-file</p>
+</div>
 <div class="section" id="enabling-ssl">
 <h3>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h3>
 <p>To enable SSL run the following commands for Apache:</p>
@@ -168,15 +186,100 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </div>
 </div>
 </div>
+<div class="section" id="backup">
+<h2>Backup<a class="headerlink" href="#backup" title="Permalink to this headline">¶</a></h2>
+<p>To backup an Nextcloud installation there are four main things we need to retain:</p>
+<ol class="arabic simple">
+<li>The config folder</li>
+<li>The data folder</li>
+<li>The theme folder</li>
+<li>The database</li>
+</ol>
+<div class="section" id="turn-on-maintenance-mode">
+<h3>Turn on maintenance mode<a class="headerlink" href="#turn-on-maintenance-mode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">maintenance:mode</span></code> locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run <code class="docutils literal notranslate"><span class="pre">occ</span></code> as the HTTP user, like this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
+</pre></div>
+</div>
+</div>
+<div class="section" id="backup-folders">
+<h3>Backup folders<a class="headerlink" href="#backup-folders" title="Permalink to this headline">¶</a></h3>
+<p>Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+</pre></div>
+</div>
+</div>
+<div class="section" id="backup-database">
+<h3>Backup database<a class="headerlink" href="#backup-database" title="Permalink to this headline">¶</a></h3>
+<p>Now we will backup the PostgreSQL database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_`date +&quot;%d-%b-%Y&quot;`.dump
+</pre></div>
+</div>
+</div>
+<div class="section" id="compress-backup">
+<h3>Compress backup<a class="headerlink" href="#compress-backup" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we compress the directory to make a single <code class="docutils literal notranslate"><span class="pre">.tar</span></code> file from it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+</pre></div>
+</div>
+<p>And we are done with backup!</p>
+</div>
+</div>
+<div class="section" id="restore">
+<h2>Restore<a class="headerlink" href="#restore" title="Permalink to this headline">¶</a></h2>
+<p>To restore a Nextcloud installation there are four main things you need to restore:</p>
+<ol class="arabic simple">
+<li>The config folder</li>
+<li>The data folder</li>
+<li>The theme folder</li>
+<li>The database</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You must have both the database and data directory. You cannot complete restoration unless you have both of these.</p>
+</div>
+<div class="section" id="decompress-backup-if-you-have-any">
+<h3>Decompress backup (if you have any)<a class="headerlink" href="#decompress-backup-if-you-have-any" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you have a made a compressed backup archive following <a class="reference internal" href="#compress-backup">Compress backup</a> and want to restore that, we need to Decompress the backup archive.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
+</pre></div>
+</div>
+</div>
+<div class="section" id="restore-folders">
+<h3>Restore folders<a class="headerlink" href="#restore-folders" title="Permalink to this headline">¶</a></h3>
+<p>Next we will copy the decompressed directory to webserver root:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+</pre></div>
+</div>
+</div>
+<div class="section" id="restore-database">
+<h3>Restore database<a class="headerlink" href="#restore-database" title="Permalink to this headline">¶</a></h3>
+<p>To restore database we need to delete the old database and create a new one where the backup one will be restored.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;DROP DATABASE \&quot;nextcloud\&quot;;&quot;
+PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;CREATE DATABASE \&quot;nextcloud\&quot;;&quot;
+</pre></div>
+</div>
+<p>Now we use the following command to restore the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
+</pre></div>
+</div>
+<p>We have one task left to do which is deleting the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> file from the <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> directory in webserver. We put the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> in the same directory as <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let’s delete the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
 <p>This document is based on or takes help from the following source(s):</p>
 <ul class="simple">
-<li><a class="reference external" href="https://www.ostechnix.com/install-nextcloud-ubuntu-16-04-lts/">How To Install Nextcloud In Ubuntu 16.04 LTS</a></li>
-<li><a class="reference external" href="https://docs.nextcloud.com/server/12/admin_manual/installation/source_installation.html/">Nextcloud Installation on Linux</a></li>
-<li><a class="reference external" href="https://docs.nextcloud.com/server/9/admin_manual/configuration_database/linux_database_configuration.html/">Nextcloud Database Configuration</a></li>
-<li><a class="reference external" href="https://docs.nextcloud.com/server/12/admin_manual/installation/installation_wizard.html/">Nextcloud Installation Wizard</a></li>
-<li><a class="reference external" href="https://help.nextcloud.com/t/postgresql-nextcloud/1083/7/">Nextcloud Community answer</a></li>
+<li><a class="reference external" href="https://www.ostechnix.com/install-nextcloud-ubuntu-16-04-lts">How To Install Nextcloud In Ubuntu 16.04 LTS</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/installation/source_installation.html">Nextcloud Installation on Linux</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html">Nextcloud Database Configuration</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/installation/installation_wizard.html">Nextcloud Installation Wizard</a></li>
+<li><a class="reference external" href="https://help.nextcloud.com/t/postgresql-nextcloud/1083/7">Nextcloud Community answer</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/maintenance/backup.html">Backing up Nextcloud</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/maintenance/restore.html">Restoring backup</a></li>
 </ul>
 </div>
 </div>
@@ -200,7 +303,21 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </ul>
 </li>
 <li><a class="reference internal" href="#customization">Customization</a><ul>
+<li><a class="reference internal" href="#pretty-urls">Pretty URLs</a></li>
 <li><a class="reference internal" href="#enabling-ssl">Enabling SSL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#backup">Backup</a><ul>
+<li><a class="reference internal" href="#turn-on-maintenance-mode">Turn on maintenance mode</a></li>
+<li><a class="reference internal" href="#backup-folders">Backup folders</a></li>
+<li><a class="reference internal" href="#backup-database">Backup database</a></li>
+<li><a class="reference internal" href="#compress-backup">Compress backup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#restore">Restore</a><ul>
+<li><a class="reference internal" href="#decompress-backup-if-you-have-any">Decompress backup (if you have any)</a></li>
+<li><a class="reference internal" href="#restore-folders">Restore folders</a></li>
+<li><a class="reference internal" href="#restore-database">Restore database</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#source">Source</a></li>
@@ -211,8 +328,6 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="openproject.html" title="previous chapter">OpenProject</a></li>
-      <li>Next: <a href="f-droid.html" title="next chapter">F-Droid</a></li>
   </ul></li>
 </ul>
 </div>
