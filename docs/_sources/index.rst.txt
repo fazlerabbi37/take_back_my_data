@@ -10,7 +10,7 @@
    :maxdepth: 2
    :caption: Contents:
    
-   f-droid
+   nextcloud
    conventions
    todo
 
