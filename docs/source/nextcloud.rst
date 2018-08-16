@@ -125,6 +125,28 @@ We can go to the installation wizard by using our preferred browser and typing `
 
 Customization
 -------------
+Here some customization that we can do to our Nextcloud instance.
+
+Pretty URLs
+```````````
+Pretty URLs remove the ``index.php``-part in all Nextcloud URLs, for example in sharing links like ``https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ``, making URLs shorter and thus prettier.
+
+``mod_env`` and ``mod_rewrite`` must be installed on your webserver and the ``.htaccess`` must be writable by the HTTP user. Then you can set  two variables in the ``config.php``. If your setup is available on ``https://example.org/nextcloud`` do the following::
+
+    'overwrite.cli.url' => 'https://example.org/nextcloud',
+    'htaccess.RewriteBase' => '/nextcloud',
+
+If it isn’t installed in a subfolder.::
+
+    'overwrite.cli.url' => 'https://example.org',
+    'htaccess.RewriteBase' => '/',
+
+Finally run this occ-command to update your .htaccess file::
+
+    sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
+
+After each update, these changes are automatically applied to the .htaccess-file
+
 Enabling SSL
 ````````````
 To enable SSL run the following commands for Apache::
@@ -137,7 +159,82 @@ To enable SSL run the following commands for Apache::
 
 
 
+Backup
+------
+To backup an Nextcloud installation there are four main things we need to retain:
 
+1. The config folder
+2. The data folder
+3. The theme folder
+4. The database
+
+
+Turn on maintenance mode
+````````````````````````
+``maintenance:mode`` locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run ``occ`` as the HTTP user, like this example::
+
+    sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
+
+
+Backup folders
+``````````````
+Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command::
+
+    sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/
+
+Backup database
+```````````````
+Now we will backup the PostgreSQL database::
+
+    PGPASSWORD="$password" pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_`date +"%d-%b-%Y"`.dump
+
+Compress backup
+```````````````
+Finally, we compress the directory to make a single ``.tar`` file from it::
+
+    tar -zcvf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`.tar.gz $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/
+
+And we are done with backup!
+
+
+Restore
+-------
+To restore a Nextcloud installation there are four main things you need to restore:
+
+1. The config folder
+2. The data folder
+3. The theme folder
+4. The database
+
+.. note:: You must have both the database and data directory. You cannot complete restoration unless you have both of these.
+
+Decompress backup (if you have any)
+```````````````````````````````````
+Assuming you have a made a compressed backup archive following `Compress backup`_ and want to restore that, we need to Decompress the backup archive.::
+
+    tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
+
+Restore folders
+```````````````
+Next we will copy the decompressed directory to webserver root::
+
+    sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+
+Restore database
+````````````````
+To restore database we need to delete the old database and create a new one where the backup one will be restored.::
+
+    PGPASSWORD="$password" psql -h localhost -U $username -d nextcloud -c "DROP DATABASE \"nextcloud\";"
+    PGPASSWORD="$password" psql -h localhost -U $username -d nextcloud -c "CREATE DATABASE \"nextcloud\";"
+
+Now we use the following command to restore the database::
+
+    PGPASSWORD="$password" pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
+
+
+We have one task left to do which is deleting the ``.dump`` file from the ``nextcloud`` directory in webserver. We put the ``.dump`` in the same directory as ``nextcloud`` backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let's delete the ``.dump`` file::
+
+    sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
 
 
 
@@ -147,10 +244,10 @@ Source
 
 This document is based on or takes help from the following source(s):
 
-- `How To Install Nextcloud In Ubuntu 16.04 LTS <https://www.ostechnix.com/install-nextcloud-ubuntu-16-04-lts/>`_
-- `Nextcloud Installation on Linux <https://docs.nextcloud.com/server/12/admin_manual/installation/source_installation.html/>`_
-- `Nextcloud Database Configuration <https://docs.nextcloud.com/server/9/admin_manual/configuration_database/linux_database_configuration.html/>`_
-- `Nextcloud Installation Wizard <https://docs.nextcloud.com/server/12/admin_manual/installation/installation_wizard.html/>`_ 
-- `Nextcloud Community answer <https://help.nextcloud.com/t/postgresql-nextcloud/1083/7/>`_
-
-
+- `How To Install Nextcloud In Ubuntu 16.04 LTS <https://www.ostechnix.com/install-nextcloud-ubuntu-16-04-lts>`_
+- `Nextcloud Installation on Linux <https://docs.nextcloud.com/server/13/admin_manual/installation/source_installation.html>`_
+- `Nextcloud Database Configuration <https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html>`_
+- `Nextcloud Installation Wizard <https://docs.nextcloud.com/server/13/admin_manual/installation/installation_wizard.html>`_
+- `Nextcloud Community answer <https://help.nextcloud.com/t/postgresql-nextcloud/1083/7>`_
+- `Backing up Nextcloud <https://docs.nextcloud.com/server/13/admin_manual/maintenance/backup.html>`_
+- `Restoring backup <https://docs.nextcloud.com/server/13/admin_manual/maintenance/restore.html>`_
