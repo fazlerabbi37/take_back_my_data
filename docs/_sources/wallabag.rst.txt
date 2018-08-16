@@ -9,6 +9,12 @@ This document is based on or takes help from the following source(s):
 - `Could not create database for connection named “ged” could not find driver <https://stackoverflow.com/questions/25063908/could-not-create-database-for-connection-named-ged-could-not-find-driver>`_
 - `Apache shows php code instead of executing <https://stackoverflow.com/questions/12142172/apache-shows-php-code-instead-of-executing/43686765#43686765>`_
 
+
+Build Status
+------------
+.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
+
 Install the necessary packages
 ------------------------------
 Using the following command install the necessary packages. ::

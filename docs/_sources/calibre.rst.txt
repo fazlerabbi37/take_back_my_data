@@ -9,6 +9,9 @@ This document is based on or takes help from the following source(s):
 - `Download for Linux <https://calibre-ebook.com/download_linux>`_
 - `calibre-server <https://manual.calibre-ebook.com/generated/en/calibre-server.html>`_
 
+
+
+
 ..
     Install the necessary packages
     ------------------------------
@@ -19,6 +22,11 @@ This document is based on or takes help from the following source(s):
        sudo apt -y upgrade
 
        sudo apt install -y xdg-utils wget xz-utils python
+
+Build Status
+------------
+.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
 Download calibre
 ----------------

@@ -2,6 +2,10 @@ Gitea installation
 ==================
 
 
+Build Status
+------------
+.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
 Prepare environment
 -------------------

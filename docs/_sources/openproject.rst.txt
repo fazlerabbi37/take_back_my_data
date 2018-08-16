@@ -1,10 +1,17 @@
 OpenProject
 ===========
+
 This document discribes the process of installing OpenProject in Ubuntu 16.04 LTS.
 
 This document is based on or takes help from the following source(s):
 
 - `How to Install OpenProject on Ubuntu 16.04 <https://www.howtoforge.com/tutorial/ubuntu-openproject-installation//>`_
+
+
+Build Status
+------------
+.. .. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
 Installation
 ------------
