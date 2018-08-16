@@ -13,13 +13,13 @@ Take Back My Data is project the tries to replace close source, commercial softw
    :maxdepth: 2
    :caption: Contents:
 
-   .. conventions
-   .. openproject
+   conventions
+   openproject
    nextcloud
-   .. f-droid
+   f-droid
    ftp
    wallabag
-   .. calibre
+   calibre
    avro_pad
    gitea
    todo
