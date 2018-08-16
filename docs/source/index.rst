@@ -9,15 +9,8 @@
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   openproject
-   nextcloud
+   
    f-droid
-   ftp
-   wallabag
-   calibre
-   avro_pad
-   gitea
    conventions
    todo
 
