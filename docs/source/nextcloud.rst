@@ -3,6 +3,10 @@ Nextcloud
 
 This document is about Nextcloud a Google Drive alternative. Change the words with ``$`` like ``$username`` to your preference.
 
+Build Status
+------------
+.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
 Installation
 ------------

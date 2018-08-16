@@ -6,6 +6,11 @@ This document is based on the following source:
 
 - `Setup an F-Droid App Repo <https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/>`_
 
+Build Status
+------------
+.. .. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
+
 Installation
 ------------
 To install the following the packages::

@@ -10,7 +10,6 @@
    :maxdepth: 2
    :caption: Contents:
 
-   conventions
    openproject
    nextcloud
    f-droid
@@ -19,6 +18,7 @@
    calibre
    avro_pad
    gitea
+   conventions
    todo
 
 

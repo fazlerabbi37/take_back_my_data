@@ -6,6 +6,12 @@ This document is based on or takes help from the following source(s):
 
 - `How To Set Up vsftpd for a User's Directory on Ubuntu 16.04 <https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04>`_
 
+
+Build Status
+------------
+.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
+
 Installing vsftpd
 -----------------
 We'll start by updating our package list and installing the ``vsftpd`` daemon::
