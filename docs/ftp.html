@@ -1,0 +1,281 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FTP Server &#8212; Take Back My Data 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wllabag" href="wallabag.html" />
+    <link rel="prev" title="F-Droid" href="f-droid.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ftp-server">
+<h1>FTP Server<a class="headerlink" href="#ftp-server" title="Permalink to this headline">¶</a></h1>
+<p>This document discribes the process of installing FTP server with <code class="docutils literal notranslate"><span class="pre">vsftpd</span></code> in Ubuntu 16.04 LTS. Change the variable starting with <code class="docutils literal notranslate"><span class="pre">$</span></code> like <code class="docutils literal notranslate"><span class="pre">$user</span></code> to requirement to make the process work.</p>
+<p>This document is based on or takes help from the following source(s):</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04">How To Set Up vsftpd for a User’s Directory on Ubuntu 16.04</a></li>
+</ul>
+<div class="section" id="installing-vsftpd">
+<h2>Installing vsftpd<a class="headerlink" href="#installing-vsftpd" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start by updating our package list and installing the <code class="docutils literal notranslate"><span class="pre">vsftpd</span></code> daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">v</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">vsftpd</span>
+</pre></div>
+</div>
+<p>When the installation is complete, we’ll copy the configuration file so we can start with a blank configuration, saving the original as a backup.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cp</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="n">conf</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">backup</span>
+</pre></div>
+</div>
+<p>Now we are done with the installation. Lets proceed with the configuration.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">add firewall opening refer to a firewall configuration doc and say which ports need to be open.</p>
+</div>
+<p>We need to create a user for our FTP. If we do not allow anonymous users than this user’s <code class="docutils literal notranslate"><span class="pre">username</span></code> and <code class="docutils literal notranslate"><span class="pre">password</span></code> will be shared among all FTP users:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo adduser $user
+</pre></div>
+</div>
+<p>Fill up the information to create a new user. FTP is generally more secure when users are restricted to a specific directory. <code class="docutils literal notranslate"><span class="pre">vsftpd</span></code> accomplishes this with <code class="docutils literal notranslate"><span class="pre">chroot</span></code> jails. When <code class="docutils literal notranslate"><span class="pre">chroot</span></code> is enabled for local users, they are restricted to their home directory by default. However, because of the way <code class="docutils literal notranslate"><span class="pre">vsftpd</span></code> secures the directory, it must not be writable by the user.</p>
+<p>In this example, rather than removing write privileges from the home directory, we’re will create an <code class="docutils literal notranslate"><span class="pre">ftp</span></code> directory to serve as the <code class="docutils literal notranslate"><span class="pre">chroot</span></code> and a writable <code class="docutils literal notranslate"><span class="pre">files</span></code> directory to hold the actual files.</p>
+<p>Create the ftp folder, set its ownership, and be sure to remove write permissions with the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo mkdir /home/$user/ftp
+sudo chown nobody:nogroup /home/$user/ftp
+sudo chmod a-w /home/$user/ftp
+</pre></div>
+</div>
+<p>Let’s verify the permissions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo ls -la /home/$user/ftp
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>total 8
+4 dr-xr-xr-x  2 nobody nogroup 4096 Aug 24 21:29 .
+4 drwxr-xr-x 3 $user  $user   4096 Aug 24 21:29 ..
+</pre></div>
+</div>
+<p>Next, we’ll create the directory where files can be uploaded and assign ownership to the user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo mkdir /home/$user/ftp/files
+sudo chown $user:$user /home/$user/ftp/files
+</pre></div>
+</div>
+<p>A permissions check on the <code class="docutils literal notranslate"><span class="pre">files</span></code> directory should return the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo ls -la /home/$user/ftp
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>total 12
+dr-xr-xr-x 3 nobody nogroup 4096 Aug 26 14:01 .
+drwxr-xr-x 3 $user  $user   4096 Aug 26 13:59 ..
+drwxr-xr-x 2 $user  $user   4096 Aug 26 14:01 files
+</pre></div>
+</div>
+<p>We’ll add a test.txt file to use when we test later on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>echo &quot;vsftpd test file&quot; | sudo tee /home/$user/ftp/files/test.txt
+</pre></div>
+</div>
+<p>Now we will change the <code class="docutils literal notranslate"><span class="pre">/etc/vsftpd.conf</span></code> file. Lets open the file with our choice of editor. Here I am using <code class="docutils literal notranslate"><span class="pre">vim</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>We will change some values in the configuration file. They are the following.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Allowing or denying anonymous users can be done using <code class="docutils literal notranslate"><span class="pre">anonymous_enable</span></code> variable. Set <code class="docutils literal notranslate"><span class="pre">anonymous_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to allow anonymous user login and <code class="docutils literal notranslate"><span class="pre">NO</span></code> to deny.</p>
+</li>
+<li><p class="first">Allowing or denying local users can be done using <code class="docutils literal notranslate"><span class="pre">local_enable</span></code> variable. Set <code class="docutils literal notranslate"><span class="pre">local_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to allow local user login and <code class="docutils literal notranslate"><span class="pre">NO</span></code> to deny.</p>
+</li>
+<li><p class="first">Allowing or denying uploading file by users can be done using <code class="docutils literal notranslate"><span class="pre">write_enable</span></code> variable. Set <code class="docutils literal notranslate"><span class="pre">write_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to allow uploading by user and <code class="docutils literal notranslate"><span class="pre">NO</span></code> to deny.</p>
+</li>
+<li><p class="first">Allowing or denying FTP-connected user from accessing any files or commands outside the directory tree can be done using <code class="docutils literal notranslate"><span class="pre">chroot_local_user</span></code> variable. Set <code class="docutils literal notranslate"><span class="pre">chroot_local_user</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to deny FTP-connected user from accessing any files or commands outside the directory tree and <code class="docutils literal notranslate"><span class="pre">NO</span></code> to allow.</p>
+</li>
+<li><p class="first">Now we will add some addition variables at the end of <code class="docutils literal notranslate"><span class="pre">/etc/vsftpd.conf</span></code> file with their values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user_sub_token=$USER
+local_root=/home/$USER/ftp
+userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO
+</pre></div>
+</div>
+</li>
+</ol>
+<p>First 2 line makes a <code class="docutils literal notranslate"><span class="pre">local_root</span></code> for local users and next 3 lines enables a user lint with a <code class="docutils literal notranslate"><span class="pre">userlist_deny</span></code> variable that can be toggled to <code class="docutils literal notranslate"><span class="pre">YES</span></code> to deny access and <code class="docutils literal notranslate"><span class="pre">NO</span></code> to allow access. Now we are done with <code class="docutils literal notranslate"><span class="pre">/etc/vsftpd.conf</span></code> and can save and exit the editor.</p>
+</div></blockquote>
+<p>We created a user list where we need to allow our user. Lets do it now:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s2">&quot;$user&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="n">userlist</span>
+</pre></div>
+</div>
+<p>Double-check that it was added as you expected:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="n">userlist</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$user
+</pre></div>
+</div>
+<p>Restart the daemon to load the configuration changes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">vsftpd</span>
+</pre></div>
+</div>
+<p>The server can be tested using the <code class="docutils literal notranslate"><span class="pre">ftp</span></code> command or by using the GUI tool <a class="reference external" href="https://filezilla-project.org">Filezilla</a>.</p>
+</div>
+<div class="section" id="disabling-deletion-of-files">
+<h2>Disabling Deletion of files<a class="headerlink" href="#disabling-deletion-of-files" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">NO need to do it if you have set <code class="docutils literal notranslate"><span class="pre">write_enable</span></code> to <code class="docutils literal notranslate"><span class="pre">NO</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/vsftpd.conf</span></code> file at <a class="reference external" href="ftp.html#configuration">Configuration</a> par part.</p>
+</div>
+<p>Login as <code class="docutils literal notranslate"><span class="pre">$user</span></code> using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>su $user
+</pre></div>
+</div>
+<p>Now we need to open <code class="docutils literal notranslate"><span class="pre">.bash_aliases</span></code> with editor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">~/.</span><span class="n">bash_aliases</span>
+</pre></div>
+</div>
+<p>Now paste the following <code class="docutils literal notranslate"><span class="pre">bash</span></code> script</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ftp_no_delete() {
+for file in $@
+do
+    echo &quot;You are not allowed to delete any file.&quot;
+done
+}
+
+alias rm=&#39;ftp_no_delete&#39;
+</pre></div>
+</div>
+<p>Now save and exit <code class="docutils literal notranslate"><span class="pre">.bash_aliases</span></code> file and run this final command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="o">~/.</span><span class="n">basrc</span>
+</pre></div>
+</div>
+<p>Now if we try deleting file we will be given the message <code class="docutils literal notranslate"><span class="pre">You</span> <span class="pre">are</span> <span class="pre">not</span> <span class="pre">allowed</span> <span class="pre">to</span> <span class="pre">delete</span> <span class="pre">any</span> <span class="pre">file.</span></code></p>
+</div>
+<div class="section" id="disabling-shell-access">
+<h2>Disabling Shell Access<a class="headerlink" href="#disabling-shell-access" title="Permalink to this headline">¶</a></h2>
+<p>First, open a file called ftponly in the bin directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ftponly</span>
+</pre></div>
+</div>
+<p>We’ll add a message telling the user why they are unable to log in. Paste in the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="n">echo</span> <span class="s2">&quot;This account is limited to FTP access only.&quot;</span>
+</pre></div>
+</div>
+<p>Change the permissions to make the file executable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ftponly</span>
+</pre></div>
+</div>
+<p>Now we need to add it to the list of valid shells. Open the list of valid shells, I will be using <code class="docutils literal notranslate"><span class="pre">vim</span></code> as before:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">shells</span>
+</pre></div>
+</div>
+<p>At the bottom, add <code class="docutils literal notranslate"><span class="pre">/bin/ftponly</span></code> then save and exit the <code class="docutils literal notranslate"><span class="pre">/etc/shells</span></code> file. Then update the user’s shell with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo usermod $user -s /bin/ftponly
+</pre></div>
+</div>
+<p>Now try logging in as <code class="docutils literal notranslate"><span class="pre">$user</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ssh $user:$ftp_server_ip
+</pre></div>
+</div>
+<p>We should see something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This account is limited to FTP access only.
+Connection to $ftp_server_ip closed.
+</pre></div>
+</div>
+<p>This confirms that the user can no longer ssh to the server and is limited to FTP access only.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FTP Server</a><ul>
+<li><a class="reference internal" href="#installing-vsftpd">Installing vsftpd</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#disabling-deletion-of-files">Disabling Deletion of files</a></li>
+<li><a class="reference internal" href="#disabling-shell-access">Disabling Shell Access</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="f-droid.html" title="previous chapter">F-Droid</a></li>
+      <li>Next: <a href="wallabag.html" title="next chapter">Wllabag</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ftp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Fazle Rabbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/ftp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,385 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gitea installation &#8212; Take Back My Data 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TODO" href="todo.html" />
+    <link rel="prev" title="Avro Pad" href="avro_pad.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gitea-installation">
+<h1>Gitea installation<a class="headerlink" href="#gitea-installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prepare-environment">
+<h2>Prepare environment<a class="headerlink" href="#prepare-environment" title="Permalink to this headline">¶</a></h2>
+<p>Check that git is installed on the server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+<p>If it is not install it first:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">git</span>
+</pre></div>
+</div>
+<p>Create user to run Gitea (ex. <cite>git</cite>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">adduser</span> \
+   <span class="o">--</span><span class="n">system</span> \
+   <span class="o">--</span><span class="n">shell</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> \
+   <span class="o">--</span><span class="n">gecos</span> <span class="s1">&#39;Git Version Control&#39;</span> \
+   <span class="o">--</span><span class="n">group</span> \
+   <span class="o">--</span><span class="n">disabled</span><span class="o">-</span><span class="n">password</span> \
+   <span class="o">--</span><span class="n">home</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">git</span> \
+   <span class="n">git</span>
+</pre></div>
+</div>
+<p>Create required directory structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="p">{</span><span class="n">custom</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">indexers</span><span class="p">,</span><span class="n">public</span><span class="p">,</span><span class="n">log</span><span class="p">}</span>
+<span class="n">sudo</span> <span class="n">chown</span> <span class="n">git</span><span class="p">:</span><span class="n">git</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="p">{</span><span class="n">data</span><span class="p">,</span><span class="n">indexers</span><span class="p">,</span><span class="n">log</span><span class="p">}</span>
+<span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">750</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="p">{</span><span class="n">data</span><span class="p">,</span><span class="n">indexers</span><span class="p">,</span><span class="n">log</span><span class="p">}</span>
+<span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span>
+<span class="n">sudo</span> <span class="n">chown</span> <span class="n">root</span><span class="p">:</span><span class="n">git</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span>
+<span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">770</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">/etc/gitea</span></code> is temporary set with write rights for user <cite>git</cite> so that Web installer could write configuration file. After installation is done it is recommended to set rights to read-only after installation.</p>
+</div>
+</div>
+<div class="section" id="database-installation">
+<h2>Database installation<a class="headerlink" href="#database-installation" title="Permalink to this headline">¶</a></h2>
+<p>We are going to use PostgreSQL for the database. If you do not have PostgreSQL installed, install with with the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">postgresql</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">contrib</span>
+</pre></div>
+</div>
+<p>If you don’t have a PostgreSQL super user already create it using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo -u postgres createuser -slP $user_name
+</pre></div>
+</div>
+<p>Now we will create a database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo -u postgres createdb -E UTF8 -O $psql_user gitea
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-gitea">
+<h2>Download Gitea<a class="headerlink" href="#download-gitea" title="Permalink to this headline">¶</a></h2>
+<p>We need to open this <a class="reference external" href="https://dl.gitea.io/gitea">link</a> using a web browser. We will see directory with version numbers like <cite>1.0.0</cite>, <cite>1.0.1</cite>, <cite>1.0.2</cite> etc. Go to the directory of your chosen version. It is recommended to use the latest version. Now download the binary file matching your architecture. We need to download the file <code class="docutils literal notranslate"><span class="pre">gitea-x.x.x-linux-arm64</span></code> because we are using a Linux OS with arm64 architecture. Right click on the file and copy the link address. Download the file using <code class="docutils literal notranslate"><span class="pre">wget</span></code>, replacing the link bellow with the one we just copied:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="n">gitea</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">gitea</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="o">/</span><span class="n">gitea</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span>
+</pre></div>
+</div>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">gitea</span></code> binary to global location:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cp</span> <span class="n">gitea</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gitea</span>
+</pre></div>
+</div>
+<p>Make the binary executable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gitea</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-gitea-service">
+<h2>Create gitea service<a class="headerlink" href="#create-gitea-service" title="Permalink to this headline">¶</a></h2>
+<p>Download the example file with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">gitea</span><span class="o">.</span><span class="n">service</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">go</span><span class="o">-</span><span class="n">gitea</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">contrib</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">gitea</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Open the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">gitea</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>We should see something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">Gitea</span> <span class="p">(</span><span class="n">Git</span> <span class="k">with</span> <span class="n">a</span> <span class="n">cup</span> <span class="n">of</span> <span class="n">tea</span><span class="p">)</span>
+<span class="n">After</span><span class="o">=</span><span class="n">syslog</span><span class="o">.</span><span class="n">target</span>
+<span class="n">After</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">target</span>
+<span class="c1">#After=mysqld.service</span>
+<span class="c1">#After=postgresql.service</span>
+<span class="c1">#After=memcached.service</span>
+<span class="c1">#After=redis.service</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="c1"># Modify these two values and uncomment them if you have</span>
+<span class="c1"># repos with lots of files and get an HTTP error 500 because</span>
+<span class="c1"># of that</span>
+<span class="c1">###</span>
+<span class="c1">#LimitMEMLOCK=infinity</span>
+<span class="c1">#LimitNOFILE=65535</span>
+<span class="n">RestartSec</span><span class="o">=</span><span class="mi">2</span><span class="n">s</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">simple</span>
+<span class="n">User</span><span class="o">=</span><span class="n">git</span>
+<span class="n">Group</span><span class="o">=</span><span class="n">git</span>
+<span class="n">WorkingDirectory</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gitea</span> <span class="n">web</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="n">app</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">always</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">USER</span><span class="o">=</span><span class="n">git</span> <span class="n">HOME</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">git</span> <span class="n">GITEA_WORK_DIR</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gitea</span>
+<span class="c1"># If you want to bind Gitea to a port below 1024 uncomment</span>
+<span class="c1"># the two values below</span>
+<span class="c1">###</span>
+<span class="c1">#CapabilityBoundingSet=CAP_NET_BIND_SERVICE</span>
+<span class="c1">#AmbientCapabilities=CAP_NET_BIND_SERVICE</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>Uncomment any service that needs to be enabled on this host, such as in our case PostgreSQL.</p>
+<p>Change the user, home directory, and other required startup values. Change the PORT or remove the -p flag if default port is used.</p>
+<p>Enable and start gitea at boot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">gitea</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">gitea</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-wizard">
+<h2>Installation Wizard<a class="headerlink" href="#installation-wizard" title="Permalink to this headline">¶</a></h2>
+<p>We can go to the installation wizard by using our preferred browser and typing <a class="reference external" href="http://$server_ip:3000">http://$server_ip:3000</a> on the address bar. Successful pre-installation should show the Gitea home page. Now click <code class="docutils literal notranslate"><span class="pre">Sign</span> <span class="pre">In</span></code>. It will redirect us to <code class="docutils literal notranslate"><span class="pre">Initial</span> <span class="pre">Configuration</span></code> page.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Database</span> <span class="pre">Settings</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Database Type = PostgreSQL
+Host          = 127.0.0.1:5432
+Username      = $psql_username
+Password      = $psql_password
+Database Name = gitea
+SSL           = Disable
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">General</span> <span class="pre">Settings</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Site Title             = $our_company_chosen_name
+Repository Root Path   =/home/git/gitea-repositories
+Git LFS Root Path      = /var/lib/gitea/data/lfs
+Run As Username        = git
+SSH Server Domain      = $server_ip_or_domain_name
+SSH Server Port        = 22
+Gitea HTTP Listen Port = $3000_or_port_of_our_choice
+Gitea Base URL         = http://$server_ip_or_domain_name:3000/
+Log Path               = /var/lib/gitea/log
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Optional</span> <span class="pre">Settings</span></code> we can set the <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">Settings</span></code>, <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">and</span> <span class="pre">Third-Party</span> <span class="pre">Service</span> <span class="pre">Settings</span></code> and <code class="docutils literal notranslate"><span class="pre">Administrator</span> <span class="pre">Account</span> <span class="pre">Settings</span></code></p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">Settings</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SMTP Host     = $smtp_host_address
+Send Email As = &quot;$sender&#39;s_name&quot; &lt;$sender&#39;s_email_address&gt;
+SMTP Username = $username
+SMTP Password = $password
+</pre></div>
+</div>
+<p>Check <code class="docutils literal notranslate"><span class="pre">Require</span> <span class="pre">Email</span> <span class="pre">Confirmation</span> <span class="pre">to</span> <span class="pre">Register</span></code> if you want people to sign up which we will not be doing in our case and  <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Email</span> <span class="pre">Notifications</span></code> for email notification which we will do.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">and</span> <span class="pre">Third-Party</span> <span class="pre">Service</span> <span class="pre">Settings</span></code>:</p>
+<p>Check <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Federated</span> <span class="pre">Avatars</span></code>, <code class="docutils literal notranslate"><span class="pre">Disable</span> <span class="pre">Self-Registration</span></code>, <code class="docutils literal notranslate"><span class="pre">Require</span> <span class="pre">Sign-In</span> <span class="pre">to</span> <span class="pre">View</span> <span class="pre">Pages</span></code>, <code class="docutils literal notranslate"><span class="pre">Hide</span> <span class="pre">Email</span> <span class="pre">Addresses</span> <span class="pre">by</span> <span class="pre">Default</span></code>, <code class="docutils literal notranslate"><span class="pre">Allow</span> <span class="pre">Creation</span> <span class="pre">of</span> <span class="pre">Organizations</span> <span class="pre">by</span> <span class="pre">Default</span></code> and also check <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">Time</span> <span class="pre">Tracking</span> <span class="pre">by</span> <span class="pre">Default</span></code>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Administrator</span> <span class="pre">Account</span> <span class="pre">Settings</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Administrator Username = $admin_username
+              Password = $admin_password
+      Confirm Password = $admin_password_again
+         Email Address = $email_address
+</pre></div>
+</div>
+<p>Now click <code class="docutils literal notranslate"><span class="pre">Install</span> <span class="pre">Gitea</span></code> to finish installing <code class="docutils literal notranslate"><span class="pre">Gitea</span></code>. After sometime, upon successful installation, we will be logged in as admin user.</p>
+<p>Now we will change the permission of <code class="docutils literal notranslate"><span class="pre">/etc/gitea</span></code> directory using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">750</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span>
+<span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">644</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="n">app</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-apache-httpd-with-a-sub-path-as-a-reverse-proxy">
+<h2>Using Apache HTTPD with a Sub-path as a reverse proxy<a class="headerlink" href="#using-apache-httpd-with-a-sub-path-as-a-reverse-proxy" title="Permalink to this headline">¶</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">apache2</span></code> if you don’t have already, using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">apache2</span>
+</pre></div>
+</div>
+<p>Create a file <code class="docutils literal notranslate"><span class="pre">gitea.conf</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">gitea</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Now paste the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;VirtualHost *:80&gt;
+    ProxyPreserveHost On
+    ProxyRequests off
+    &lt;Proxy *&gt;
+         Order allow,deny
+         Allow from all
+    &lt;/Proxy&gt;
+
+    ProxyPass /$sub_dir_name http://localhost:$port
+    ProxyPassReverse /$sub_dir_name http://localhost:$port
+&lt;/VirtualHost&gt;
+</pre></div>
+</div>
+<p>Enable the configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">gitea</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>I don’t know why but at this point we need to disable the <code class="docutils literal notranslate"><span class="pre">000-default.conf</span></code> or else we will get 404 error. Let’s do that now:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2dissite</span> <span class="mi">000</span><span class="o">-</span><span class="n">default</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Now open the config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span><span class="n">app</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+<p>Find the <code class="docutils literal notranslate"><span class="pre">[server]</span></code> part where we need to change the <cite>ROOT_URL`</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ROOT_URL    =  http://$server_ip_or_domain_name/$sub_dir_name/
+</pre></div>
+</div>
+<p>Restart <code class="docutils literal notranslate"><span class="pre">gitea.service</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">gitea</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Now enable <code class="docutils literal notranslate"><span class="pre">proxy</span></code>, <code class="docutils literal notranslate"><span class="pre">proxy_http</span></code> mod of <code class="docutils literal notranslate"><span class="pre">apache2</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">proxy</span>
+<span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">proxy_http</span>
+</pre></div>
+</div>
+<p>Finally we need to restart the Apache server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Now visit <code class="docutils literal notranslate"><span class="pre">http://$server_ip_or_domain_name/$sub_dir_name/</span></code> where Gitea will be seen.</p>
+</div>
+<div class="section" id="apache-sub-path-as-https-reverse-proxy-with-let-s-encrypt">
+<h2>Apache Sub-path as HTTPS reverse proxy with Let’s Encrypt<a class="headerlink" href="#apache-sub-path-as-https-reverse-proxy-with-let-s-encrypt" title="Permalink to this headline">¶</a></h2>
+<p>After getting the SSL certificate from Let’s Encrypt enable <code class="docutils literal notranslate"><span class="pre">ssl</span></code> mod:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
+</pre></div>
+</div>
+<p>Open the <code class="docutils literal notranslate"><span class="pre">gitea.conf</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">gitea</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Change the file content to reflect this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SSLProxyEngine</span> <span class="n">On</span>
+<span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+<span class="n">ProxyRequests</span> <span class="n">off</span>
+
+<span class="o">&lt;</span><span class="n">Proxy</span> <span class="o">*&gt;</span>
+    <span class="n">Order</span> <span class="n">allow</span><span class="p">,</span><span class="n">deny</span>
+    <span class="n">Allow</span> <span class="kn">from</span> <span class="nn">all</span>
+<span class="o">&lt;/</span><span class="n">Proxy</span><span class="o">&gt;</span>
+
+<span class="n">ProxyPass</span> <span class="o">/</span><span class="n">gitea</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">3000</span>
+<span class="n">ProxyPassReverse</span> <span class="o">/</span><span class="n">gitea</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">3000</span>
+</pre></div>
+</div>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">app.ini</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">server</span><span class="p">]</span>
+<span class="n">PROTOCOL</span>         <span class="o">=</span> <span class="n">http</span>
+<span class="n">SSH_DOMAIN</span>       <span class="o">=</span> <span class="n">your</span><span class="o">-</span><span class="n">domain</span><span class="o">.</span><span class="n">ltd</span>
+<span class="n">DOMAIN</span>           <span class="o">=</span> <span class="n">your</span><span class="o">-</span><span class="n">domain</span><span class="o">.</span><span class="n">ltd</span>
+<span class="n">HTTP_ADDR</span>        <span class="o">=</span> <span class="n">localhost</span>
+<span class="n">HTTP_PORT</span>        <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">ROOT_URL</span>         <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">-</span><span class="n">domain</span><span class="o">.</span><span class="n">ltd</span><span class="o">/</span><span class="n">gitea</span><span class="o">/</span>
+<span class="n">DISABLE_SSH</span>      <span class="o">=</span> <span class="n">false</span>
+<span class="n">SSH_PORT</span>         <span class="o">=</span> <span class="mi">22</span>
+</pre></div>
+</div>
+<p>Now restart the <code class="docutils literal notranslate"><span class="pre">gitea.service</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">gitea</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Now restart the Apache server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Gitea should be available at <code class="docutils literal notranslate"><span class="pre">https://your-domain.ltd/gitea/</span></code> address.</p>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.gitea.io/en-us/install-from-binary/">https://docs.gitea.io/en-us/install-from-binary/</a></li>
+<li><a class="reference external" href="https://docs.gitea.io/en-us/linux-service/">https://docs.gitea.io/en-us/linux-service/</a></li>
+<li><a class="reference external" href="https://docs.gitea.io/en-us/reverse-proxies/">https://docs.gitea.io/en-us/reverse-proxies/</a></li>
+<li><a class="reference external" href="https://github.com/go-gitea/gitea/issues/4537">https://github.com/go-gitea/gitea/issues/4537</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Gitea installation</a><ul>
+<li><a class="reference internal" href="#prepare-environment">Prepare environment</a></li>
+<li><a class="reference internal" href="#database-installation">Database installation</a></li>
+<li><a class="reference internal" href="#download-gitea">Download Gitea</a></li>
+<li><a class="reference internal" href="#create-gitea-service">Create gitea service</a></li>
+<li><a class="reference internal" href="#installation-wizard">Installation Wizard</a></li>
+<li><a class="reference internal" href="#using-apache-httpd-with-a-sub-path-as-a-reverse-proxy">Using Apache HTTPD with a Sub-path as a reverse proxy</a></li>
+<li><a class="reference internal" href="#apache-sub-path-as-https-reverse-proxy-with-let-s-encrypt">Apache Sub-path as HTTPS reverse proxy with Let’s Encrypt</a></li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="avro_pad.html" title="previous chapter">Avro Pad</a></li>
+      <li>Next: <a href="todo.html" title="next chapter">TODO</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gitea.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Fazle Rabbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/gitea.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

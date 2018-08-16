@@ -1,0 +1,158 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>F-Droid &#8212; Take Back My Data 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FTP Server" href="ftp.html" />
+    <link rel="prev" title="Nextcloud" href="nextcloud.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="f-droid">
+<h1>F-Droid<a class="headerlink" href="#f-droid" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the process of installing F-Droid server in Ubuntu 16.04 LTS. Change the words with <code class="docutils literal notranslate"><span class="pre">$</span></code> like <code class="docutils literal notranslate"><span class="pre">$username</span></code> to your preference.</p>
+<p>This document is based on the following source:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/">Setup an F-Droid App Repo</a></li>
+</ul>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install the following the packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">fdroidserver</span> <span class="n">apache2</span> <span class="n">openjdk</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">jre</span><span class="o">-</span><span class="n">headless</span> <span class="n">openjdk</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">jdk</span><span class="o">-</span><span class="n">headless</span>
+</pre></div>
+</div>
+<p>We also need to install Android SDK. As of now Android SDK can’t be downloaded separately so we need to download Android Studio and download SDK. Android Studio installation is a long process which will be described in this document. Download Android Studio for Linux from this <a class="reference external" href="https://developer.android.com/studio/index.html">link</a> and see the installation instruction from this <a class="reference external" href="https://developer.android.com/studio/install.html">link</a>. When you are done with you Android Studio installation set you Android SDK to you <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable or export it as <code class="docutils literal notranslate"><span class="pre">ANDROID_HOME</span></code> in <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>To configure F-Droid server go to a directory where you want to install F-Droid and make a directory name <code class="docutils literal notranslate"><span class="pre">fdroid</span></code>. Now change directory to <code class="docutils literal notranslate"><span class="pre">fdroid</span></code> directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">fdroid</span>
+<span class="n">cd</span> <span class="n">fdroid</span>
+</pre></div>
+</div>
+<p>Now we will initialize the F-Droid server.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fdroid</span> <span class="n">init</span>
+</pre></div>
+</div>
+<p>This command gives a long output where it creates a <code class="docutils literal notranslate"><span class="pre">keystore.jks</span></code> key file.</p>
+<p>Now we need to copy some apks into the <code class="docutils literal notranslate"><span class="pre">repo</span></code> directory and update the server.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cp $path/to/apks/*.apk /$path/to/fdroid/repo
+
+fdroid update -c
+fdroid update
+</pre></div>
+</div>
+<p>This two command creates metadata for the apps in the <code class="docutils literal notranslate"><span class="pre">metadata</span></code> directory and a signed index. A listing of this directory will revile the same number of <code class="docutils literal notranslate"><span class="pre">.txt</span></code> as of apks we put on the <code class="docutils literal notranslate"><span class="pre">repo</span></code> directory. We need to edit this <code class="docutils literal notranslate"><span class="pre">metadata</span></code> texts to add <code class="docutils literal notranslate"><span class="pre">catagory</span></code>. To do so we need to run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fdroid</span> <span class="n">rewritemeta</span>
+</pre></div>
+</div>
+<p>Now we can go to <code class="docutils literal notranslate"><span class="pre">metadata</span></code> directory and add <code class="docutils literal notranslate"><span class="pre">catagory</span></code> of our choice. After adding the catagory(s) we need to update the F-Droid server with this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fdroid</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>We need to configure our webserver to serve the repo. We will make a directory for F-Droid inside our webserver’s root directory so that the repos can be served.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo mkdir $path/to/webserver/root/fdroid
+</pre></div>
+</div>
+<p>Now we need to change some configuration of <code class="docutils literal notranslate"><span class="pre">config.py</span></code>. We need to add <code class="docutils literal notranslate"><span class="pre">serverwebroot</span></code> in <code class="docutils literal notranslate"><span class="pre">config.py</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">serverwebroot</span> <span class="o">=</span> <span class="s1">&#39;$path/to/webserver/root/fdroid&#39;</span>
+</pre></div>
+</div>
+<p>Now update the webserver</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">fdroid</span> <span class="n">server</span> <span class="n">update</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>Now restart the apache service to see the change in effect.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Now if we open the <code class="docutils literal notranslate"><span class="pre">$f-droid_server_ip/fdroid/repo</span></code> link in a browser we should see <code class="docutils literal notranslate"><span class="pre">catagories.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">index.xml</span></code>, <code class="docutils literal notranslate"><span class="pre">index.jar</span></code>, apks we put into <code class="docutils literal notranslate"><span class="pre">repo</span></code> directory and some icons directory. If everything is there we can now add this repo to our F-Droid android client by going to <code class="docutils literal notranslate"><span class="pre">Settings</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Repositories</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">F-Droid</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="nextcloud.html" title="previous chapter">Nextcloud</a></li>
+      <li>Next: <a href="ftp.html" title="next chapter">FTP Server</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/f-droid.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Fazle Rabbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/f-droid.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

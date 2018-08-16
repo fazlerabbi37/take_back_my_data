@@ -1,0 +1,264 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Nextcloud &#8212; Take Back My Data 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="F-Droid" href="f-droid.html" />
+    <link rel="prev" title="OpenProject" href="openproject.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nextcloud">
+<h1>Nextcloud<a class="headerlink" href="#nextcloud" title="Permalink to this headline">¶</a></h1>
+<p>This document is about Nextcloud a Google Drive alternative. Change the words with <code class="docutils literal notranslate"><span class="pre">$</span></code> like <code class="docutils literal notranslate"><span class="pre">$username</span></code> to your preference.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This part document describes the process of installing Nextcloud.</p>
+<div class="section" id="install-the-necessary-packages">
+<h3>Install the necessary packages<a class="headerlink" href="#install-the-necessary-packages" title="Permalink to this headline">¶</a></h3>
+<p>Using the following command install the necessary packages.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">apache2</span> <span class="n">postgresql</span><span class="o">-</span><span class="mf">9.5</span> <span class="n">libapache2</span><span class="o">-</span><span class="n">mod</span><span class="o">-</span><span class="n">php7</span><span class="o">.</span><span class="mi">0</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">gd</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">json</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">curl</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">mbstring</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">intl</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">mcrypt</span> <span class="n">php</span><span class="o">-</span><span class="n">imagick</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">xml</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="nb">zip</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">pgsql</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-nextcloud">
+<h3>Download Nextcloud<a class="headerlink" href="#download-nextcloud" title="Permalink to this headline">¶</a></h3>
+<p>Following this steps we can download Nextcloud to our web server</p>
+<ol class="arabic">
+<li><p class="first">We need to go to this <a class="reference external" href="https://nextcloud.com/install/">Nextcloud Download</a> link with our preferred browser and click on <code class="docutils literal notranslate"><span class="pre">Download</span></code> button bellow <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Nextcloud</span> <span class="pre">Server</span></code> section. A screen would pop up with a big <code class="docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Nextcloud</span></code> button. Bellow that button we will see <code class="docutils literal notranslate"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> button. We need to click on that <code class="docutils literal notranslate"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> that will reviles 3 steps.</p>
+</li>
+<li><p class="first">Next we need to right click on <code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> and copy link address of first step the <code class="docutils literal notranslate"><span class="pre">1.</span> <span class="pre">Download</span> <span class="pre">the</span> <span class="pre">.tar.bz2</span> <span class="pre">or</span> <span class="pre">.zip</span> <span class="pre">archive</span></code> which gives us the download link of latest and stable version of Nextcloud.</p>
+</li>
+<li><p class="first">Now using <code class="docutils literal notranslate"><span class="pre">wget</span></code> download the <code class="docutils literal notranslate"><span class="pre">nextcloud.tar.bz2</span></code> to your preferred location.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">-</span><span class="mf">13.0</span><span class="o">.</span><span class="mf">1.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>We can see while we are writing this documentation we have 13.0.1 of Nextcloud as latest and stable version.</p>
+<ol class="arabic" start="4">
+<li><p class="first">Then we need to decompress the <code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> archive. We can do that by using this command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xjf</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To move Nextcloud to you web server document root use this command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo cp -r nextcloud /$path/to/webserver/document-root
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change the owner of <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> directory to <code class="docutils literal notranslate"><span class="pre">www-data</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data /$path/to/webserver/document-root/nextcloud/
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="database-configuration">
+<h3>Database configuration<a class="headerlink" href="#database-configuration" title="Permalink to this headline">¶</a></h3>
+<p>We are going to use PostgreSQL for our Nextcloud database. For other database configuration refer to this <a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html#postgresql-database/">Database Configuration</a> document.</p>
+<p>Use this commands to configure PostgreSQL for Nextcloud:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
+</pre></div>
+</div>
+<p>Then a <code class="docutils literal notranslate"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE USER $username WITH PASSWORD &#39;$password&#39;;
+CREATE DATABASE nextcloud TEMPLATE template0 ENCODING &#39;UNICODE&#39;;
+ALTER DATABASE nextcloud OWNER TO $username;
+GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
+</pre></div>
+</div>
+<p>You can quit the prompt by entering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">q</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="apache-web-server-configuration">
+<h3>Apache Web Server Configuration<a class="headerlink" href="#apache-web-server-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Now we need to configure Apache Web Server. We will need to create a conf file for Nextcloud.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Now paste the following on that file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Alias /nextcloud &quot;/$path/to/webserver/document-root/nextcloud&quot;
+
+&lt;Directory /$path/to/webserver/document-root/nextcloud/&gt;
+  Options +FollowSymlinks
+  AllowOverride All
+
+ &lt;IfModule mod_dav.c&gt;
+  Dav off
+ &lt;/IfModule&gt;
+
+ SetEnv HOME /$path/to/webserver/document-root/nextcloud
+ SetEnv HTTP_HOME /$path/to/webserver/document-root/nextcloud
+
+&lt;/Directory&gt;
+</pre></div>
+</div>
+<p>Now create a <code class="docutils literal notranslate"><span class="pre">symlink</span></code> to <code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-enabled</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>This can also be done with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>Additionally run this commands to enable some modules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">rewrite</span>
+<span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">headers</span>
+<span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">env</span>
+<span class="n">sudo</span> <span class="n">a2enmod</span> <span class="nb">dir</span>
+<span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">mime</span>
+</pre></div>
+</div>
+<p>To see the changed configuration on effect we need to restart the Apache Web Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">apache2</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enabling-ssl">
+<h3>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h3>
+<p>To enable SSL run the following commands for Apache:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a2enmod</span> <span class="n">ssl</span>
+<span class="n">a2ensite</span> <span class="n">default</span><span class="o">-</span><span class="n">ssl</span>
+<span class="n">service</span> <span class="n">apache2</span> <span class="n">reload</span>
+</pre></div>
+</div>
+<p>Now restart restart the Apache Web Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">apache2</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-wizard">
+<h3>Installation Wizard<a class="headerlink" href="#installation-wizard" title="Permalink to this headline">¶</a></h3>
+<p>We can go to the installation wizard by using our preferred browser and typing <code class="docutils literal notranslate"><span class="pre">http://$server_ip/nextcloud</span></code> on the address bar. On successful installation we should see the Nextcloud Installation Wizard. We need to follow this steps to finish installation.</p>
+<ol class="arabic simple">
+<li>At the top of the page we will be asked for user name and password for creating an admin account. Enter a good user name and strong password.</li>
+<li>Next we have <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Folder</span></code> which we can keep the default to <code class="docutils literal notranslate"><span class="pre">$path/to/webserver/document-root/nextcloud/data</span></code> to change to some other directory.</li>
+<li>Next comes the database configuration. We need to give the user name, password and database from the Database configuration.</li>
+</ol>
+<ol class="arabic simple" start="4">
+<li>Now click <code class="docutils literal notranslate"><span class="pre">Finish</span> <span class="pre">setup</span></code> and wait for some time to finish Nextcloud setup. After finishing the setup you will be redirected to the home page of Nextcloud.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<p>This document is based on or takes help from the following source(s):</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.ostechnix.com/install-nextcloud-ubuntu-16-04-lts/">How To Install Nextcloud In Ubuntu 16.04 LTS</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/12/admin_manual/installation/source_installation.html/">Nextcloud Installation on Linux</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/9/admin_manual/configuration_database/linux_database_configuration.html/">Nextcloud Database Configuration</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/12/admin_manual/installation/installation_wizard.html/">Nextcloud Installation Wizard</a></li>
+<li><a class="reference external" href="https://help.nextcloud.com/t/postgresql-nextcloud/1083/7/">Nextcloud Community answer</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Nextcloud</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#install-the-necessary-packages">Install the necessary packages</a></li>
+<li><a class="reference internal" href="#download-nextcloud">Download Nextcloud</a></li>
+<li><a class="reference internal" href="#database-configuration">Database configuration</a></li>
+<li><a class="reference internal" href="#apache-web-server-configuration">Apache Web Server Configuration</a></li>
+<li><a class="reference internal" href="#enabling-ssl">Enabling SSL</a></li>
+<li><a class="reference internal" href="#installation-wizard">Installation Wizard</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="openproject.html" title="previous chapter">OpenProject</a></li>
+      <li>Next: <a href="f-droid.html" title="next chapter">F-Droid</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nextcloud.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Fazle Rabbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/nextcloud.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
