@@ -1,7 +1,7 @@
 Nextcloud
 =========
 
-This document is about Nextcloud a Google Drive alternative. Change the words with ``$`` like ``$username`` to your preference.
+Nextcloud is a Google Drive alternative. Through out this documentation we will see some variables starting with ``$``. We will change those variables to suit our preference.
 
 Build Status
 ------------
@@ -10,12 +10,12 @@ Build Status
 
 Installation
 ------------
-This part document describes the process of installing Nextcloud.
+This part document describes the process of installing Nextcloud in Ubuntu 16.04 LTS.
 
 
 Install the necessary packages
 ``````````````````````````````
-Using the following command install the necessary packages. ::
+Using the following command we will install the necessary packages. ::
 
    sudo apt update
 
@@ -33,7 +33,7 @@ Following this steps we can download Nextcloud to our web server
 
 3. Now using ``wget`` download the ``nextcloud.tar.bz2`` to your preferred location. ::
 
-    wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-13.0.1.tar.bz2
+    wget -O nextcloud.tar.bz2 $copied_link
 
 We can see while we are writing this documentation we have 13.0.1 of Nextcloud as latest and stable version.
 
@@ -51,7 +51,7 @@ We can see while we are writing this documentation we have 13.0.1 of Nextcloud a
 
 Database configuration
 ``````````````````````
-We are going to use PostgreSQL for our Nextcloud database. For other database configuration refer to this `Database Configuration <https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html#postgresql-database/>`_ document.
+We are going to use PostgreSQL for our Nextcloud database. For other database configuration refer to `Nextcloud Database Configuration <https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html#postgresql-database/>`_ document.
 
 Use this commands to configure PostgreSQL for Nextcloud::
 
@@ -91,15 +91,11 @@ Now paste the following on that file::
 
     </Directory>
 
-Now create a ``symlink`` to ``/etc/apache2/sites-enabled`` ::
-
-    sudo ln -s /etc/apache2/sites-available/nextcloud.conf /etc/apache2/sites-enabled/nextcloud.conf
-
-This can also be done with the following command::
+Now we will enable the site with the following command::
 
     sudo a2ensite nextcloud.conf
 
-Additionally run this commands to enable some modules::
+Additionally we need to run this commands to enable some modules::
 
     sudo a2enmod rewrite
     sudo a2enmod headers
@@ -111,26 +107,6 @@ To see the changed configuration on effect we need to restart the Apache Web Ser
 
     sudo systemctl restart apache2.service
 
-OR ::
-
-    sudo service apache2 restart
-
-
-Enabling SSL
-````````````
-To enable SSL run the following commands for Apache::
-
-    a2enmod ssl
-    a2ensite default-ssl
-    service apache2 reload
-
-Now restart restart the Apache Web Server::
-
-    sudo systemctl restart apache2.service
-
-OR ::
-
-     sudo service apache2 restart
 
 Installation Wizard
 ```````````````````
@@ -140,11 +116,29 @@ We can go to the installation wizard by using our preferred browser and typing `
 
 2. Next we have ``Data Folder`` which we can keep the default to ``$path/to/webserver/document-root/nextcloud/data`` to change to some other directory.
 
-3. Next comes the database configuration. We need to give the user name, password and database from the Database configuration.
+3. Next comes the database configuration. We need to give the user name, password and database from the `Database configuration`_.
 
 .. todo:: link Database configuration on Installation Wizard to Database configuration above
 
 4. Now click ``Finish setup`` and wait for some time to finish Nextcloud setup. After finishing the setup you will be redirected to the home page of Nextcloud.
+
+
+Customization
+-------------
+Enabling SSL
+````````````
+To enable SSL run the following commands for Apache::
+
+    sudo a2enmod ssl
+    sudo a2ensite default-ssl
+    sudo systemctl restart apache2.service
+
+
+
+
+
+
+
 
 
 
