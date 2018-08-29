@@ -8,8 +8,8 @@ Build Status
 .. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
 .. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
-Installation
-------------
+Basic Installation
+------------------
 This part document describes the process of installing Nextcloud in Ubuntu 16.04 LTS.
 
 
@@ -123,12 +123,9 @@ We can go to the installation wizard by using our preferred browser and typing `
 4. Now click ``Finish setup`` and wait for some time to finish Nextcloud setup. After finishing the setup you will be redirected to the home page of Nextcloud.
 
 
-Customization
--------------
-Here some customization that we can do to our Nextcloud instance.
 
 Pretty URLs
-```````````
+-----------
 Pretty URLs remove the ``index.php``-part in all Nextcloud URLs, for example in sharing links like ``https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ``, making URLs shorter and thus prettier.
 
 ``mod_env`` and ``mod_rewrite`` must be installed on your webserver and the ``.htaccess`` must be writable by the HTTP user. Then you can set  two variables in the ``config.php``. If your setup is available on ``https://example.org/nextcloud`` do the following::
@@ -147,15 +144,15 @@ Finally run this occ-command to update your .htaccess file::
 
 After each update, these changes are automatically applied to the .htaccess-file
 
+
+
 Enabling SSL
-````````````
+------------
 To enable SSL run the following commands for Apache::
 
     sudo a2enmod ssl
     sudo a2ensite default-ssl
     sudo systemctl restart apache2.service
-
-
 
 
 
@@ -238,6 +235,24 @@ We have one task left to do which is deleting the ``.dump`` file from the ``next
 
 
 
+Email configuration
+-------------------
+Nextcloud is capable of sending password reset emails, notifying users of new file shares, changes in files, and activity notifications. Users configure which notifications they want to receive on their Personal pages.
+
+We will be configuring a Gmail account as SMTP mail server. Navigate to ``Settings`` > ``Administration`` > ``Additional settings``. On top we will see ``Email server`` section. Put the following information:
+
+* In ``Sent mode`` we will select ``SMTP``
+* In ``Encryption`` we will  select ``SSL/TLS``
+* In ``From address`` we will enter Gmail username in ``mail`` before the ``@`` sign and ``gmail.com`` in ``example.com`` after the ``@`` sign.  
+* In ``Authentication`` we will select ``Login`` and Put check mark on 'Authentication required'
+* In ``Server address`` we will enter ``smtp.gmail.com:465``
+* In ``Credentials`` we have two parts ``SMTP Username`` and ``SMTP Password``
+    - In ``SMTP Username`` we will put our Gmail username
+    - In ``SMTP Password`` we will put our Gmail password [If the Gmail account has 2FA enable see this `link <https://support.google.com/accounts/answer/185833?hl=en>`_ to make an app password]. 
+
+Now click on ``Store credentials`` and click on ``Send email`` to sent a test mail. 
+
+
 
 Source
 ------
@@ -251,3 +266,4 @@ This document is based on or takes help from the following source(s):
 - `Nextcloud Community answer <https://help.nextcloud.com/t/postgresql-nextcloud/1083/7>`_
 - `Backing up Nextcloud <https://docs.nextcloud.com/server/13/admin_manual/maintenance/backup.html>`_
 - `Restoring backup <https://docs.nextcloud.com/server/13/admin_manual/maintenance/restore.html>`_
+- `Email configuration <https://docs.nextcloud.com/server/13/admin_manual/configuration_server/email_configuration.html>`_
