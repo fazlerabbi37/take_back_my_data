@@ -12,13 +12,13 @@
    
    nextcloud
    avro_pad
+   gitea
    conventions
    todo
 
 ..   calibre
    f-droid
    ftp
-   gitea
    openproject
    wallabag.rst
    
