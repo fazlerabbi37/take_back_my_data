@@ -11,9 +11,17 @@
    :caption: Contents:
    
    nextcloud
+   avro_pad
    conventions
    todo
 
+..   calibre
+   f-droid
+   ftp
+   gitea
+   openproject
+   wallabag.rst
+   
 
 
 Indices and tables

@@ -15,6 +15,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Avro Pad" href="avro_pad.html" />
+    <link rel="prev" title="Welcome to Take Back My Data’s documentation!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -35,8 +37,8 @@
 <div class="section" id="build-status">
 <h2>Build Status<a class="headerlink" href="#build-status" title="Permalink to this headline">¶</a></h2>
 <img alt="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" src="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" /></div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-installation">
+<h2>Basic Installation<a class="headerlink" href="#basic-installation" title="Permalink to this headline">¶</a></h2>
 <p>This part document describes the process of installing Nextcloud in Ubuntu 16.04 LTS.</p>
 <div class="section" id="install-the-necessary-packages">
 <h3>Install the necessary packages<a class="headerlink" href="#install-the-necessary-packages" title="Permalink to this headline">¶</a></h3>
@@ -154,11 +156,8 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </ol>
 </div>
 </div>
-<div class="section" id="customization">
-<h2>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h2>
-<p>Here some customization that we can do to our Nextcloud instance.</p>
 <div class="section" id="pretty-urls">
-<h3>Pretty URLs<a class="headerlink" href="#pretty-urls" title="Permalink to this headline">¶</a></h3>
+<h2>Pretty URLs<a class="headerlink" href="#pretty-urls" title="Permalink to this headline">¶</a></h2>
 <p>Pretty URLs remove the <code class="docutils literal notranslate"><span class="pre">index.php</span></code>-part in all Nextcloud URLs, for example in sharing links like <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ</span></code>, making URLs shorter and thus prettier.</p>
 <p><code class="docutils literal notranslate"><span class="pre">mod_env</span></code> and <code class="docutils literal notranslate"><span class="pre">mod_rewrite</span></code> must be installed on your webserver and the <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> must be writable by the HTTP user. Then you can set  two variables in the <code class="docutils literal notranslate"><span class="pre">config.php</span></code>. If your setup is available on <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud</span></code> do the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org/nextcloud&#39;</span><span class="p">,</span>
@@ -177,13 +176,12 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <p>After each update, these changes are automatically applied to the .htaccess-file</p>
 </div>
 <div class="section" id="enabling-ssl">
-<h3>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h3>
+<h2>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h2>
 <p>To enable SSL run the following commands for Apache:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
 <span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">default</span><span class="o">-</span><span class="n">ssl</span>
 <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="backup">
@@ -269,6 +267,28 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 </div>
 </div>
 </div>
+<div class="section" id="email-configuration">
+<h2>Email configuration<a class="headerlink" href="#email-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Nextcloud is capable of sending password reset emails, notifying users of new file shares, changes in files, and activity notifications. Users configure which notifications they want to receive on their Personal pages.</p>
+<p>We will be configuring a Gmail account as SMTP mail server. Navigate to <code class="docutils literal notranslate"><span class="pre">Settings</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Administration</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Additional</span> <span class="pre">settings</span></code>. On top we will see <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">server</span></code> section. Put the following information:</p>
+<ul class="simple">
+<li>In <code class="docutils literal notranslate"><span class="pre">Sent</span> <span class="pre">mode</span></code> we will select <code class="docutils literal notranslate"><span class="pre">SMTP</span></code></li>
+<li>In <code class="docutils literal notranslate"><span class="pre">Encryption</span></code> we will  select <code class="docutils literal notranslate"><span class="pre">SSL/TLS</span></code></li>
+<li>In <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">address</span></code> we will enter Gmail username in <code class="docutils literal notranslate"><span class="pre">mail</span></code> before the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> sign and <code class="docutils literal notranslate"><span class="pre">gmail.com</span></code> in <code class="docutils literal notranslate"><span class="pre">example.com</span></code> after the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> sign.</li>
+<li>In <code class="docutils literal notranslate"><span class="pre">Authentication</span></code> we will select <code class="docutils literal notranslate"><span class="pre">Login</span></code> and Put check mark on ‘Authentication required’</li>
+<li>In <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">address</span></code> we will enter <code class="docutils literal notranslate"><span class="pre">smtp.gmail.com:465</span></code></li>
+<li><dl class="first docutils">
+<dt>In <code class="docutils literal notranslate"><span class="pre">Credentials</span></code> we have two parts <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Username</span></code> and <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Password</span></code></dt>
+<dd><ul class="first last">
+<li>In <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Username</span></code> we will put our Gmail username</li>
+<li>In <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Password</span></code> we will put our Gmail password [If the Gmail account has 2FA enable see this <a class="reference external" href="https://support.google.com/accounts/answer/185833?hl=en">link</a> to make an app password].</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Now click on <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">credentials</span></code> and click on <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">email</span></code> to sent a test mail.</p>
+</div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
 <p>This document is based on or takes help from the following source(s):</p>
@@ -280,6 +300,7 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <li><a class="reference external" href="https://help.nextcloud.com/t/postgresql-nextcloud/1083/7">Nextcloud Community answer</a></li>
 <li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/maintenance/backup.html">Backing up Nextcloud</a></li>
 <li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/maintenance/restore.html">Restoring backup</a></li>
+<li><a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/configuration_server/email_configuration.html">Email configuration</a></li>
 </ul>
 </div>
 </div>
@@ -294,7 +315,7 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
   <ul>
 <li><a class="reference internal" href="#">Nextcloud</a><ul>
 <li><a class="reference internal" href="#build-status">Build Status</a></li>
-<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#basic-installation">Basic Installation</a><ul>
 <li><a class="reference internal" href="#install-the-necessary-packages">Install the necessary packages</a></li>
 <li><a class="reference internal" href="#download-nextcloud">Download Nextcloud</a></li>
 <li><a class="reference internal" href="#database-configuration">Database configuration</a></li>
@@ -302,11 +323,8 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <li><a class="reference internal" href="#installation-wizard">Installation Wizard</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#customization">Customization</a><ul>
 <li><a class="reference internal" href="#pretty-urls">Pretty URLs</a></li>
 <li><a class="reference internal" href="#enabling-ssl">Enabling SSL</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#backup">Backup</a><ul>
 <li><a class="reference internal" href="#turn-on-maintenance-mode">Turn on maintenance mode</a></li>
 <li><a class="reference internal" href="#backup-folders">Backup folders</a></li>
@@ -320,6 +338,7 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <li><a class="reference internal" href="#restore-database">Restore database</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#email-configuration">Email configuration</a></li>
 <li><a class="reference internal" href="#source">Source</a></li>
 </ul>
 </li>
@@ -328,6 +347,8 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Take Back My Data’s documentation!</a></li>
+      <li>Next: <a href="avro_pad.html" title="next chapter">Avro Pad</a></li>
   </ul></li>
 </ul>
 </div>
