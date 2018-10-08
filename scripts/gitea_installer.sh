@@ -34,7 +34,7 @@ sudo apt update
 sudo apt install -y postgresql postgresql-contrib
 
 #ask user if he wants to create a user
-echo "Do you want to create a user?[y/n]"
+echo "Do you want to create a PostgreSQL user?[y/n]"
 read option
 if [[ $option == 'y' ]]
 then
