@@ -282,10 +282,28 @@ Now restart the Apache server::
 
 Gitea should be available at ``https://your-domain.ltd/gitea/`` address.
 
+Add reStructuredText(rST) perser
+--------------------------------
+.. warning:: Here to render rST we are using ``rst2html.py`` tool. ``rst2html.py`` is a part of docutils tools which can be installed in Ubuntu 16.04 using the following command ``sudo apt install docutils-doc docutils-common``.
+
+Gitea can support Markup using external tools. The example below will add a markup named `reStructuredText(rST) <http://docutils.sourceforge.net/rst.html>`_. Open ``/etc/apache2/sites-available/gitea.conf`` file::
+
+    sudo nano /etc/apache2/sites-available/gitea.conf
+
+Add the following at the bottom::
+
+    [markup.rst]
+    ENABLED = true
+    FILE_EXTENSIONS = .rst,.rest,.restx
+    RENDER_COMMAND = "rst2html.py --no-raw"
+    IS_INPUT_FILE = false
+
+Now save the file and restart the gitea service.
 
 Source
 ------
-- https://docs.gitea.io/en-us/install-from-binary/
-- https://docs.gitea.io/en-us/linux-service/
-- https://docs.gitea.io/en-us/reverse-proxies/
-- https://github.com/go-gitea/gitea/issues/4537
+- `Installation from binary <https://docs.gitea.io/en-us/install-from-binary>`_
+- `Run as service in Ubuntu 16.04 LTS <https://docs.gitea.io/en-us/linux-service>`_
+- `Using Apache HTTPD as a reverse proxy <https://docs.gitea.io/en-us/reverse-proxies>`_
+- `Could not load cert file with Let's Encrypt apache <https://github.com/go-gitea/gitea/issues/4537>`_
+- `Configuration Cheat Sheet: Markup <https://docs.gitea.io/en-us/config-cheat-sheet>`_
