@@ -4,12 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Nextcloud &#8212; Take Back My Data 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -20,10 +28,10 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
+  </head>
+  <body>
   
 
     <div class="document">
@@ -33,7 +41,7 @@
             
   <div class="section" id="nextcloud">
 <h1>Nextcloud<a class="headerlink" href="#nextcloud" title="Permalink to this headline">¶</a></h1>
-<p>Nextcloud is a Google Drive alternative. Through out this documentation we will see some variables starting with <code class="docutils literal notranslate"><span class="pre">$</span></code>. We will change those variables to suit our preference.</p>
+<p>Nextcloud is a Google Drive alternative. Through out this documentation we will see some variables starting with <code class="docutils literal"><span class="pre">$</span></code>. We will change those variables to suit our preference.</p>
 <div class="section" id="build-status">
 <h2>Build Status<a class="headerlink" href="#build-status" title="Permalink to this headline">¶</a></h2>
 <img alt="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" src="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" /></div>
@@ -43,7 +51,7 @@
 <div class="section" id="install-the-necessary-packages">
 <h3>Install the necessary packages<a class="headerlink" href="#install-the-necessary-packages" title="Permalink to this headline">¶</a></h3>
 <p>Using the following command we will install the necessary packages.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
 
 <span class="n">sudo</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
 
@@ -55,30 +63,30 @@
 <h3>Download Nextcloud<a class="headerlink" href="#download-nextcloud" title="Permalink to this headline">¶</a></h3>
 <p>Following this steps we can download Nextcloud to our web server</p>
 <ol class="arabic">
-<li><p class="first">We need to go to this <a class="reference external" href="https://nextcloud.com/install/">Nextcloud Download</a> link with our preferred browser and click on <code class="docutils literal notranslate"><span class="pre">Download</span></code> button bellow <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Nextcloud</span> <span class="pre">Server</span></code> section. A screen would pop up with a big <code class="docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Nextcloud</span></code> button. Bellow that button we will see <code class="docutils literal notranslate"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> button. We need to click on that <code class="docutils literal notranslate"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> that will reviles 3 steps.</p>
+<li><p class="first">We need to go to this <a class="reference external" href="https://nextcloud.com/install/">Nextcloud Download</a> link with our preferred browser and click on <code class="docutils literal"><span class="pre">Download</span></code> button bellow <code class="docutils literal"><span class="pre">Get</span> <span class="pre">Nextcloud</span> <span class="pre">Server</span></code> section. A screen would pop up with a big <code class="docutils literal"><span class="pre">Download</span> <span class="pre">Nextcloud</span></code> button. Bellow that button we will see <code class="docutils literal"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> button. We need to click on that <code class="docutils literal"><span class="pre">Details</span> <span class="pre">and</span> <span class="pre">Download</span> <span class="pre">options</span></code> that will reviles 3 steps.</p>
 </li>
-<li><p class="first">Next we need to right click on <code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> and copy link address of first step the <code class="docutils literal notranslate"><span class="pre">1.</span> <span class="pre">Download</span> <span class="pre">the</span> <span class="pre">.tar.bz2</span> <span class="pre">or</span> <span class="pre">.zip</span> <span class="pre">archive</span></code> which gives us the download link of latest and stable version of Nextcloud.</p>
+<li><p class="first">Next we need to right click on <code class="docutils literal"><span class="pre">.tar.bz2</span></code> and copy link address of first step the <code class="docutils literal"><span class="pre">1.</span> <span class="pre">Download</span> <span class="pre">the</span> <span class="pre">.tar.bz2</span> <span class="pre">or</span> <span class="pre">.zip</span> <span class="pre">archive</span></code> which gives us the download link of latest and stable version of Nextcloud.</p>
 </li>
-<li><p class="first">Now using <code class="docutils literal notranslate"><span class="pre">wget</span></code> download the <code class="docutils literal notranslate"><span class="pre">nextcloud.tar.bz2</span></code> to your preferred location.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -O nextcloud.tar.bz2 $copied_link
+<li><p class="first">Now using <code class="docutils literal"><span class="pre">wget</span></code> download the <code class="docutils literal"><span class="pre">nextcloud.tar.bz2</span></code> to your preferred location.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>wget -O nextcloud.tar.bz2 $copied_link
 </pre></div>
 </div>
 </li>
 </ol>
 <p>We can see while we are writing this documentation we have 13.0.1 of Nextcloud as latest and stable version.</p>
 <ol class="arabic" start="4">
-<li><p class="first">Then we need to decompress the <code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> archive. We can do that by using this command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xjf</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<li><p class="first">Then we need to decompress the <code class="docutils literal"><span class="pre">.tar.bz2</span></code> archive. We can do that by using this command.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xjf</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">To move Nextcloud to you web server document root use this command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo cp -r nextcloud /$path/to/webserver/document-root
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo cp -r nextcloud /$path/to/webserver/document-root
 </pre></div>
 </div>
 </li>
-<li><p class="first">Change the owner of <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> directory to <code class="docutils literal notranslate"><span class="pre">www-data</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data /$path/to/webserver/document-root/nextcloud/
+<li><p class="first">Change the owner of <code class="docutils literal"><span class="pre">nextcloud</span></code> directory to <code class="docutils literal"><span class="pre">www-data</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data /$path/to/webserver/document-root/nextcloud/
 </pre></div>
 </div>
 </li>
@@ -88,29 +96,29 @@
 <h3>Database configuration<a class="headerlink" href="#database-configuration" title="Permalink to this headline">¶</a></h3>
 <p>We are going to use PostgreSQL for our Nextcloud database. For other database configuration refer to <a class="reference external" href="https://docs.nextcloud.com/server/13/admin_manual/configuration_database/linux_database_configuration.html#postgresql-database/">Nextcloud Database Configuration</a> document.</p>
 <p>Use this commands to configure PostgreSQL for Nextcloud:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
 </pre></div>
 </div>
-<p>Then a <code class="docutils literal notranslate"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE USER $username WITH PASSWORD &#39;$password&#39;;
+<p>Then a <code class="docutils literal"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>CREATE USER $username WITH PASSWORD &#39;$password&#39;;
 CREATE DATABASE nextcloud TEMPLATE template0 ENCODING &#39;UNICODE&#39;;
 ALTER DATABASE nextcloud OWNER TO $username;
 GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 <p>You can quit the prompt by entering:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">q</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>\<span class="n">q</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="apache-web-server-configuration">
 <h3>Apache Web Server Configuration<a class="headerlink" href="#apache-web-server-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Now we need to configure Apache Web Server. We will need to create a conf file for Nextcloud.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
 </pre></div>
 </div>
 <p>Now paste the following on that file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Alias /nextcloud &quot;/$path/to/webserver/document-root/nextcloud&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span>Alias /nextcloud &quot;/$path/to/webserver/document-root/nextcloud&quot;
 
 &lt;Directory /$path/to/webserver/document-root/nextcloud/&gt;
   Options +FollowSymlinks
@@ -127,11 +135,11 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 <p>Now we will enable the site with the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">nextcloud</span><span class="o">.</span><span class="n">conf</span>
 </pre></div>
 </div>
 <p>Additionally we need to run this commands to enable some modules:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">rewrite</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">rewrite</span>
 <span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">headers</span>
 <span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">env</span>
 <span class="n">sudo</span> <span class="n">a2enmod</span> <span class="nb">dir</span>
@@ -139,38 +147,38 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 <p>To see the changed configuration on effect we need to restart the Apache Web Server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation-wizard">
 <h3>Installation Wizard<a class="headerlink" href="#installation-wizard" title="Permalink to this headline">¶</a></h3>
-<p>We can go to the installation wizard by using our preferred browser and typing <code class="docutils literal notranslate"><span class="pre">http://$server_ip/nextcloud</span></code> on the address bar. On successful installation we should see the Nextcloud Installation Wizard. We need to follow this steps to finish installation.</p>
+<p>We can go to the installation wizard by using our preferred browser and typing <code class="docutils literal"><span class="pre">http://$server_ip/nextcloud</span></code> on the address bar. On successful installation we should see the Nextcloud Installation Wizard. We need to follow this steps to finish installation.</p>
 <ol class="arabic simple">
 <li>At the top of the page we will be asked for user name and password for creating an admin account. Enter a good user name and strong password.</li>
-<li>Next we have <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Folder</span></code> which we can keep the default to <code class="docutils literal notranslate"><span class="pre">$path/to/webserver/document-root/nextcloud/data</span></code> to change to some other directory.</li>
+<li>Next we have <code class="docutils literal"><span class="pre">Data</span> <span class="pre">Folder</span></code> which we can keep the default to <code class="docutils literal"><span class="pre">$path/to/webserver/document-root/nextcloud/data</span></code> to change to some other directory.</li>
 <li>Next comes the database configuration. We need to give the user name, password and database from the <a class="reference internal" href="#database-configuration">Database configuration</a>.</li>
 </ol>
 <ol class="arabic simple" start="4">
-<li>Now click <code class="docutils literal notranslate"><span class="pre">Finish</span> <span class="pre">setup</span></code> and wait for some time to finish Nextcloud setup. After finishing the setup you will be redirected to the home page of Nextcloud.</li>
+<li>Now click <code class="docutils literal"><span class="pre">Finish</span> <span class="pre">setup</span></code> and wait for some time to finish Nextcloud setup. After finishing the setup you will be redirected to the home page of Nextcloud.</li>
 </ol>
 </div>
 </div>
 <div class="section" id="pretty-urls">
 <h2>Pretty URLs<a class="headerlink" href="#pretty-urls" title="Permalink to this headline">¶</a></h2>
-<p>Pretty URLs remove the <code class="docutils literal notranslate"><span class="pre">index.php</span></code>-part in all Nextcloud URLs, for example in sharing links like <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ</span></code>, making URLs shorter and thus prettier.</p>
-<p><code class="docutils literal notranslate"><span class="pre">mod_env</span></code> and <code class="docutils literal notranslate"><span class="pre">mod_rewrite</span></code> must be installed on your webserver and the <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> must be writable by the HTTP user. Then you can set  two variables in the <code class="docutils literal notranslate"><span class="pre">config.php</span></code>. If your setup is available on <code class="docutils literal notranslate"><span class="pre">https://example.org/nextcloud</span></code> do the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org/nextcloud&#39;</span><span class="p">,</span>
+<p>Pretty URLs remove the <code class="docutils literal"><span class="pre">index.php</span></code>-part in all Nextcloud URLs, for example in sharing links like <code class="docutils literal"><span class="pre">https://example.org/nextcloud/index.php/s/Sv1b7krAUqmF8QQ</span></code>, making URLs shorter and thus prettier.</p>
+<p><code class="docutils literal"><span class="pre">mod_env</span></code> and <code class="docutils literal"><span class="pre">mod_rewrite</span></code> must be installed on your webserver and the <code class="docutils literal"><span class="pre">.htaccess</span></code> must be writable by the HTTP user. Then you can set  two variables in the <code class="docutils literal"><span class="pre">config.php</span></code>. If your setup is available on <code class="docutils literal"><span class="pre">https://example.org/nextcloud</span></code> do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org/nextcloud&#39;</span><span class="p">,</span>
 <span class="s1">&#39;htaccess.RewriteBase&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/nextcloud&#39;</span><span class="p">,</span>
 </pre></div>
 </div>
 <p>If it isn’t installed in a subfolder.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org&#39;</span><span class="p">,</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;overwrite.cli.url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://example.org&#39;</span><span class="p">,</span>
 <span class="s1">&#39;htaccess.RewriteBase&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
 </pre></div>
 </div>
 <p>Finally run this occ-command to update your .htaccess file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">php</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">/</span><span class="n">occ</span> <span class="n">maintenance</span><span class="p">:</span><span class="n">update</span><span class="p">:</span><span class="n">htaccess</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">php</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">/</span><span class="n">occ</span> <span class="n">maintenance</span><span class="p">:</span><span class="n">update</span><span class="p">:</span><span class="n">htaccess</span>
 </pre></div>
 </div>
 <p>After each update, these changes are automatically applied to the .htaccess-file</p>
@@ -178,7 +186,7 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <div class="section" id="enabling-ssl">
 <h2>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h2>
 <p>To enable SSL run the following commands for Apache:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">ssl</span>
 <span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">default</span><span class="o">-</span><span class="n">ssl</span>
 <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
@@ -195,29 +203,29 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </ol>
 <div class="section" id="turn-on-maintenance-mode">
 <h3>Turn on maintenance mode<a class="headerlink" href="#turn-on-maintenance-mode" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">maintenance:mode</span></code> locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run <code class="docutils literal notranslate"><span class="pre">occ</span></code> as the HTTP user, like this example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
+<p><code class="docutils literal"><span class="pre">maintenance:mode</span></code> locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run <code class="docutils literal"><span class="pre">occ</span></code> as the HTTP user, like this example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
 </pre></div>
 </div>
 </div>
 <div class="section" id="backup-folders">
 <h3>Backup folders<a class="headerlink" href="#backup-folders" title="Permalink to this headline">¶</a></h3>
 <p>Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
 </pre></div>
 </div>
 </div>
 <div class="section" id="backup-database">
 <h3>Backup database<a class="headerlink" href="#backup-database" title="Permalink to this headline">¶</a></h3>
 <p>Now we will backup the PostgreSQL database:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_`date +&quot;%d-%b-%Y&quot;`.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_`date +&quot;%d-%b-%Y&quot;`.dump
 </pre></div>
 </div>
 </div>
 <div class="section" id="compress-backup">
 <h3>Compress backup<a class="headerlink" href="#compress-backup" title="Permalink to this headline">¶</a></h3>
-<p>Finally, we compress the directory to make a single <code class="docutils literal notranslate"><span class="pre">.tar</span></code> file from it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+<p>Finally, we compress the directory to make a single <code class="docutils literal"><span class="pre">.tar</span></code> file from it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
 </pre></div>
 </div>
 <p>And we are done with backup!</p>
@@ -239,30 +247,30 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <div class="section" id="decompress-backup-if-you-have-any">
 <h3>Decompress backup (if you have any)<a class="headerlink" href="#decompress-backup-if-you-have-any" title="Permalink to this headline">¶</a></h3>
 <p>Assuming you have a made a compressed backup archive following <a class="reference internal" href="#compress-backup">Compress backup</a> and want to restore that, we need to Decompress the backup archive.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
 </pre></div>
 </div>
 </div>
 <div class="section" id="restore-folders">
 <h3>Restore folders<a class="headerlink" href="#restore-folders" title="Permalink to this headline">¶</a></h3>
 <p>Next we will copy the decompressed directory to webserver root:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
 </pre></div>
 </div>
 </div>
 <div class="section" id="restore-database">
 <h3>Restore database<a class="headerlink" href="#restore-database" title="Permalink to this headline">¶</a></h3>
 <p>To restore database we need to delete the old database and create a new one where the backup one will be restored.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;DROP DATABASE \&quot;nextcloud\&quot;;&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;DROP DATABASE \&quot;nextcloud\&quot;;&quot;
 PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;CREATE DATABASE \&quot;nextcloud\&quot;;&quot;
 </pre></div>
 </div>
 <p>Now we use the following command to restore the database:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
 </pre></div>
 </div>
-<p>We have one task left to do which is deleting the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> file from the <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> directory in webserver. We put the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> in the same directory as <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let’s delete the <code class="docutils literal notranslate"><span class="pre">.dump</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
+<p>We have one task left to do which is deleting the <code class="docutils literal"><span class="pre">.dump</span></code> file from the <code class="docutils literal"><span class="pre">nextcloud</span></code> directory in webserver. We put the <code class="docutils literal"><span class="pre">.dump</span></code> in the same directory as <code class="docutils literal"><span class="pre">nextcloud</span></code> backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let’s delete the <code class="docutils literal"><span class="pre">.dump</span></code> file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
 </pre></div>
 </div>
 </div>
@@ -270,24 +278,24 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <div class="section" id="email-configuration">
 <h2>Email configuration<a class="headerlink" href="#email-configuration" title="Permalink to this headline">¶</a></h2>
 <p>Nextcloud is capable of sending password reset emails, notifying users of new file shares, changes in files, and activity notifications. Users configure which notifications they want to receive on their Personal pages.</p>
-<p>We will be configuring a Gmail account as SMTP mail server. Navigate to <code class="docutils literal notranslate"><span class="pre">Settings</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Administration</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Additional</span> <span class="pre">settings</span></code>. On top we will see <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">server</span></code> section. Put the following information:</p>
+<p>We will be configuring a Gmail account as SMTP mail server. Navigate to <code class="docutils literal"><span class="pre">Settings</span></code> &gt; <code class="docutils literal"><span class="pre">Administration</span></code> &gt; <code class="docutils literal"><span class="pre">Additional</span> <span class="pre">settings</span></code>. On top we will see <code class="docutils literal"><span class="pre">Email</span> <span class="pre">server</span></code> section. Put the following information:</p>
 <ul class="simple">
-<li>In <code class="docutils literal notranslate"><span class="pre">Sent</span> <span class="pre">mode</span></code> we will select <code class="docutils literal notranslate"><span class="pre">SMTP</span></code></li>
-<li>In <code class="docutils literal notranslate"><span class="pre">Encryption</span></code> we will  select <code class="docutils literal notranslate"><span class="pre">SSL/TLS</span></code></li>
-<li>In <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">address</span></code> we will enter Gmail username in <code class="docutils literal notranslate"><span class="pre">mail</span></code> before the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> sign and <code class="docutils literal notranslate"><span class="pre">gmail.com</span></code> in <code class="docutils literal notranslate"><span class="pre">example.com</span></code> after the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> sign.</li>
-<li>In <code class="docutils literal notranslate"><span class="pre">Authentication</span></code> we will select <code class="docutils literal notranslate"><span class="pre">Login</span></code> and Put check mark on ‘Authentication required’</li>
-<li>In <code class="docutils literal notranslate"><span class="pre">Server</span> <span class="pre">address</span></code> we will enter <code class="docutils literal notranslate"><span class="pre">smtp.gmail.com:465</span></code></li>
+<li>In <code class="docutils literal"><span class="pre">Sent</span> <span class="pre">mode</span></code> we will select <code class="docutils literal"><span class="pre">SMTP</span></code></li>
+<li>In <code class="docutils literal"><span class="pre">Encryption</span></code> we will  select <code class="docutils literal"><span class="pre">SSL/TLS</span></code></li>
+<li>In <code class="docutils literal"><span class="pre">From</span> <span class="pre">address</span></code> we will enter Gmail username in <code class="docutils literal"><span class="pre">mail</span></code> before the <code class="docutils literal"><span class="pre">&#64;</span></code> sign and <code class="docutils literal"><span class="pre">gmail.com</span></code> in <code class="docutils literal"><span class="pre">example.com</span></code> after the <code class="docutils literal"><span class="pre">&#64;</span></code> sign.</li>
+<li>In <code class="docutils literal"><span class="pre">Authentication</span></code> we will select <code class="docutils literal"><span class="pre">Login</span></code> and Put check mark on ‘Authentication required’</li>
+<li>In <code class="docutils literal"><span class="pre">Server</span> <span class="pre">address</span></code> we will enter <code class="docutils literal"><span class="pre">smtp.gmail.com:465</span></code></li>
 <li><dl class="first docutils">
-<dt>In <code class="docutils literal notranslate"><span class="pre">Credentials</span></code> we have two parts <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Username</span></code> and <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Password</span></code></dt>
+<dt>In <code class="docutils literal"><span class="pre">Credentials</span></code> we have two parts <code class="docutils literal"><span class="pre">SMTP</span> <span class="pre">Username</span></code> and <code class="docutils literal"><span class="pre">SMTP</span> <span class="pre">Password</span></code></dt>
 <dd><ul class="first last">
-<li>In <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Username</span></code> we will put our Gmail username</li>
-<li>In <code class="docutils literal notranslate"><span class="pre">SMTP</span> <span class="pre">Password</span></code> we will put our Gmail password [If the Gmail account has 2FA enable see this <a class="reference external" href="https://support.google.com/accounts/answer/185833?hl=en">link</a> to make an app password].</li>
+<li>In <code class="docutils literal"><span class="pre">SMTP</span> <span class="pre">Username</span></code> we will put our Gmail username</li>
+<li>In <code class="docutils literal"><span class="pre">SMTP</span> <span class="pre">Password</span></code> we will put our Gmail password [If the Gmail account has 2FA enable see this <a class="reference external" href="https://support.google.com/accounts/answer/185833?hl=en">link</a> to make an app password].</li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Now click on <code class="docutils literal notranslate"><span class="pre">Store</span> <span class="pre">credentials</span></code> and click on <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">email</span></code> to sent a test mail.</p>
+<p>Now click on <code class="docutils literal"><span class="pre">Store</span> <span class="pre">credentials</span></code> and click on <code class="docutils literal"><span class="pre">Send</span> <span class="pre">email</span></code> to sent a test mail.</p>
 </div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
@@ -361,14 +369,12 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -379,8 +385,8 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
       &copy;2018, Fazle Rabbi.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/nextcloud.rst.txt"

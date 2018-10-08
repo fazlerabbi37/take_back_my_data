@@ -4,12 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Wllabag &#8212; Take Back My Data 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -18,10 +26,10 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
+  </head>
+  <body>
   
 
     <div class="document">
@@ -31,7 +39,7 @@
             
   <div class="section" id="wllabag">
 <h1>Wllabag<a class="headerlink" href="#wllabag" title="Permalink to this headline">¶</a></h1>
-<p>This document describes the process of installing <a class="reference external" href="https://www.wallabag.it/">Wallabag</a> in Ubuntu 16.04 LTS. Change the words with <code class="docutils literal notranslate"><span class="pre">$</span></code> like <code class="docutils literal notranslate"><span class="pre">$username</span></code> to your preference.</p>
+<p>This document describes the process of installing <a class="reference external" href="https://www.wallabag.it/">Wallabag</a> in Ubuntu 16.04 LTS. Change the words with <code class="docutils literal"><span class="pre">$</span></code> like <code class="docutils literal"><span class="pre">$username</span></code> to your preference.</p>
 <p>This document is based on or takes help from the following source(s):</p>
 <ul class="simple">
 <li><a class="reference external" href="https://www.linuxbabe.com/ubuntu/install-wallabag-ubuntu-16-04">Install Wallabag on Ubuntu 16.04 Server with LAMP or LEMP</a></li>
@@ -45,7 +53,7 @@
 <div class="section" id="install-the-necessary-packages">
 <h2>Install the necessary packages<a class="headerlink" href="#install-the-necessary-packages" title="Permalink to this headline">¶</a></h2>
 <p>Using the following command install the necessary packages.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">v</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">v</span>
 
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
 
@@ -54,42 +62,42 @@
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">curl</span> <span class="n">git</span> <span class="n">postgresql</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">contrib</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">cli</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">curl</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">gd</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">xml</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">common</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">mbstring</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">bcmath</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="nb">zip</span> <span class="n">php7</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">pgsql</span> <span class="n">libapache2</span><span class="o">-</span><span class="n">mod</span><span class="o">-</span><span class="n">php</span>
 </pre></div>
 </div>
-<p>We also need to install <code class="docutils literal notranslate"><span class="pre">composer</span></code> using this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">sS</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">getcomposer</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">installer</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">php</span> <span class="o">--</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="nb">dir</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span> <span class="o">--</span><span class="n">filename</span><span class="o">=</span><span class="n">composer</span>
+<p>We also need to install <code class="docutils literal"><span class="pre">composer</span></code> using this command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">sS</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">getcomposer</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">installer</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">php</span> <span class="o">--</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="nb">dir</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span> <span class="o">--</span><span class="n">filename</span><span class="o">=</span><span class="n">composer</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="make-database">
 <h2>Make database<a class="headerlink" href="#make-database" title="Permalink to this headline">¶</a></h2>
 <p>We are going to use PostgreSQL for our database. At first we need to create a user for PostgreSQL:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo -u postgres createuser -dlsP --interactive $username
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u postgres createuser -dlsP --interactive $username
 </pre></div>
 </div>
 <p>Use this commands to configure PostgreSQL for Wallabag:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
 </pre></div>
 </div>
-<p>Then a <code class="docutils literal notranslate"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE wallabag TEMPLATE template0 ENCODING &#39;UNICODE&#39;;
+<p>Then a <code class="docutils literal"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>CREATE DATABASE wallabag TEMPLATE template0 ENCODING &#39;UNICODE&#39;;
 ALTER DATABASE wallabag OWNER TO $username;
 GRANT ALL PRIVILEGES ON DATABASE wallabag TO $username;
 </pre></div>
 </div>
 <p>You can quit the prompt by entering:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">q</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>\<span class="n">q</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-wallabag">
 <h2>Install wallabag<a class="headerlink" href="#install-wallabag" title="Permalink to this headline">¶</a></h2>
 <p>We need to change directory to webserver root clone wallabag:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">webserver</span><span class="o">/</span><span class="n">root</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">webserver</span><span class="o">/</span><span class="n">root</span>
 <span class="n">sudo</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">wallabag</span><span class="o">/</span><span class="n">wallabag</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">wallabag</span>
 </pre></div>
 </div>
-<p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code>. Change this parameter value and accept others with default:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>database_driver: pdo_pgsql
+<p>Run <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code>. Change this parameter value and accept others with default:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>database_driver: pdo_pgsql
 database_port: 5432
 database_user: $username
 database_password: $password
@@ -99,25 +107,25 @@ secret: $some_suggeted_value
 </pre></div>
 </div>
 <p>After taking this inputs wallabag database will be created and after it we will be asked to create a user and upon supplying user name, password and email it will create a admin user.</p>
-<p>Now run the following command to change wallabag directory ownership to <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span><span class="p">:</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="n">web</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">wallabag</span>
+<p>Now run the following command to change wallabag directory ownership to <code class="docutils literal"><span class="pre">www-data</span></code> user:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span><span class="p">:</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="n">web</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">wallabag</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="configure-webserver">
 <h2>Configure webserver<a class="headerlink" href="#configure-webserver" title="Permalink to this headline">¶</a></h2>
-<p>To configure the webserver first we need run the following commands to enable <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> mod:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">rewrite</span>
+<p>To configure the webserver first we need run the following commands to enable <code class="docutils literal"><span class="pre">rewrite</span></code> mod:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2enmod</span> <span class="n">rewrite</span>
 
 <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">reload</span> <span class="n">apache2</span>
 </pre></div>
 </div>
-<p>Then we need to create a <code class="docutils literal notranslate"><span class="pre">conf</span></code> file for wallabag:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">wallabag</span><span class="o">.</span><span class="n">conf</span>
+<p>Then we need to create a <code class="docutils literal"><span class="pre">conf</span></code> file for wallabag:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">wallabag</span><span class="o">.</span><span class="n">conf</span>
 </pre></div>
 </div>
 <p>Paste the following content into the file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;VirtualHost *:80&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span>&lt;VirtualHost *:80&gt;
     ServerName $ip_or_domain
     ServerAlias $ip_or_domain
 
@@ -154,8 +162,8 @@ secret: $some_suggeted_value
 &lt;/VirtualHost&gt;
 </pre></div>
 </div>
-<p>Finally we need to enable the <code class="docutils literal notranslate"><span class="pre">wallabag.conf</span></code> and restart the <code class="docutils literal notranslate"><span class="pre">apache2</span></code> server.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">wallabag</span><span class="o">.</span><span class="n">conf</span>
+<p>Finally we need to enable the <code class="docutils literal"><span class="pre">wallabag.conf</span></code> and restart the <code class="docutils literal"><span class="pre">apache2</span></code> server.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">wallabag</span><span class="o">.</span><span class="n">conf</span>
 
 <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
@@ -165,7 +173,7 @@ secret: $some_suggeted_value
 <h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>can we keep the main wallabag folder on some other place and symlink it to web server root?</li>
-<li>can we change the <code class="docutils literal notranslate"><span class="pre">wallabag.conf</span></code> to add alias like <code class="docutils literal notranslate"><span class="pre">$ip/wallabag</span></code>?</li>
+<li>can we change the <code class="docutils literal"><span class="pre">wallabag.conf</span></code> to add alias like <code class="docutils literal"><span class="pre">$ip/wallabag</span></code>?</li>
 </ul>
 </div>
 </div>
@@ -204,14 +212,12 @@ secret: $some_suggeted_value
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -222,8 +228,8 @@ secret: $some_suggeted_value
       &copy;2018, Fazle Rabbi.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/wallabag.rst.txt"
