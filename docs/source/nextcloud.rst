@@ -206,6 +206,12 @@ Finally, we will bundle the directory backup archive with the database backup an
 
 And we are done with backup!
 
+Turn off maintenance mode
+`````````````````````````
+Run the following command to turn off maintenance mode::
+
+    sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --off
+
 
 Restore
 -------

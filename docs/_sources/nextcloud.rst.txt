@@ -172,26 +172,45 @@ Turn on maintenance mode
 
     sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
 
+Make a backup directory
+```````````````````````
+We will make a temporery backup directory where we will story the backup files and directorys until we make a single ``.tar`` archive from them.::
+
+    mkdir $path/of/backup/nextcloud_`date +"%d-%b-%Y"`
 
 Backup folders
 ``````````````
 Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command::
 
-    sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/
+    sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
+
+Now compress the directory backup and make a ``.tar`` file::
+
+    tar -zcvf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`.tar.gz $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
+
+After the archiving is successfully complete we can delete the ``nextcloud_directory_backup_`date +"%d-%b-%Y"`/`` directory::
+
+    rm -rf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
 
 Backup database
 ```````````````
 Now we will backup the PostgreSQL database::
 
-    PGPASSWORD="$password" pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_`date +"%d-%b-%Y"`.dump
+    PGPASSWORD="$password" pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_databese_backup_`date +"%d-%b-%Y"`.dump
 
-Compress backup
-```````````````
-Finally, we compress the directory to make a single ``.tar`` file from it::
+Compress full backup
+````````````````````
+Finally, we will bundle the directory backup archive with the database backup and make it a single ``.tar`` file::
 
     tar -zcvf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`.tar.gz $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/
 
 And we are done with backup!
+
+Turn off maintenance mode
+`````````````````````````
+Run the following command to turn off maintenance mode::
+
+    sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --off
 
 
 Restore
@@ -207,15 +226,21 @@ To restore a Nextcloud installation there are four main things you need to resto
 
 Decompress backup (if you have any)
 ```````````````````````````````````
-Assuming you have a made a compressed backup archive following `Compress backup`_ and want to restore that, we need to Decompress the backup archive.::
+Assuming we have a made a compressed backup archive following `Compress backup`_ and want to restore that, we need to Decompress the backup archive.::
 
     tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
 
+At this step, we should see one archive named ``nextcloud_directory_backup_$month-date-year.tar.gz`` and a database dump named ``nextcloud_databese_backup``.
+
 Restore folders
 ```````````````
-Next we will copy the decompressed directory to webserver root::
+If we found the archive named ``nextcloud_directory_backup_$month-date-year.tar.gz`` containng Nextcloud config, data and theme dir. We need to decompress this directory::
 
-    sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+    tar -xvzf $path/of/backup/nextcloud_directory_backup_$month-date-year.tar.gz
+
+Then, we copy the decompressed directory to webserver root::
+
+    sudo rsync -Aax nextcloud_directory_backup_$month-date-year/ $path/to/webserver/document-root/nextcloud/
 
 Restore database
 ````````````````
@@ -226,12 +251,7 @@ To restore database we need to delete the old database and create a new one wher
 
 Now we use the following command to restore the database::
 
-    PGPASSWORD="$password" pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
-
-
-We have one task left to do which is deleting the ``.dump`` file from the ``nextcloud`` directory in webserver. We put the ``.dump`` in the same directory as ``nextcloud`` backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let's delete the ``.dump`` file::
-
-    sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
+    PGPASSWORD="$password" pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_databese_backup_$month-date-year.dump
 
 
 

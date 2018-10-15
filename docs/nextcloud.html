@@ -208,27 +208,49 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 </div>
+<div class="section" id="make-a-backup-directory">
+<h3>Make a backup directory<a class="headerlink" href="#make-a-backup-directory" title="Permalink to this headline">¶</a></h3>
+<p>We will make a temporery backup directory where we will story the backup files and directorys until we make a single <code class="docutils literal"><span class="pre">.tar</span></code> archive from them.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>mkdir $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`
+</pre></div>
+</div>
+</div>
 <div class="section" id="backup-folders">
 <h3>Backup folders<a class="headerlink" href="#backup-folders" title="Permalink to this headline">¶</a></h3>
 <p>Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
+</pre></div>
+</div>
+<p>Now compress the directory backup and make a <code class="docutils literal"><span class="pre">.tar</span></code> file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
+</pre></div>
+</div>
+<p>After the archiving is successfully complete we can delete the <code class="docutils literal"><span class="pre">nextcloud_directory_backup_`date</span> <span class="pre">+&quot;%d-%b-%Y&quot;`/</span></code> directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>rm -rf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
 </pre></div>
 </div>
 </div>
 <div class="section" id="backup-database">
 <h3>Backup database<a class="headerlink" href="#backup-database" title="Permalink to this headline">¶</a></h3>
 <p>Now we will backup the PostgreSQL database:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_`date +&quot;%d-%b-%Y&quot;`.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_databese_backup_`date +&quot;%d-%b-%Y&quot;`.dump
 </pre></div>
 </div>
 </div>
-<div class="section" id="compress-backup">
-<h3>Compress backup<a class="headerlink" href="#compress-backup" title="Permalink to this headline">¶</a></h3>
-<p>Finally, we compress the directory to make a single <code class="docutils literal"><span class="pre">.tar</span></code> file from it:</p>
+<div class="section" id="compress-full-backup">
+<h3>Compress full backup<a class="headerlink" href="#compress-full-backup" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we will bundle the directory backup archive with the database backup and make it a single <code class="docutils literal"><span class="pre">.tar</span></code> file:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
 </pre></div>
 </div>
 <p>And we are done with backup!</p>
+</div>
+<div class="section" id="turn-off-maintenance-mode">
+<h3>Turn off maintenance mode<a class="headerlink" href="#turn-off-maintenance-mode" title="Permalink to this headline">¶</a></h3>
+<p>Run the following command to turn off maintenance mode:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --off
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="restore">
@@ -246,15 +268,20 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </div>
 <div class="section" id="decompress-backup-if-you-have-any">
 <h3>Decompress backup (if you have any)<a class="headerlink" href="#decompress-backup-if-you-have-any" title="Permalink to this headline">¶</a></h3>
-<p>Assuming you have a made a compressed backup archive following <a class="reference internal" href="#compress-backup">Compress backup</a> and want to restore that, we need to Decompress the backup archive.:</p>
+<p>Assuming we have a made a compressed backup archive following <a href="#id3"><span class="problematic" id="id4">`Compress backup`_</span></a> and want to restore that, we need to Decompress the backup archive.:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
 </pre></div>
 </div>
+<p>At this step, we should see one archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup_$month-date-year.tar.gz</span></code> and a database dump named <code class="docutils literal"><span class="pre">nextcloud_databese_backup</span></code>.</p>
 </div>
 <div class="section" id="restore-folders">
 <h3>Restore folders<a class="headerlink" href="#restore-folders" title="Permalink to this headline">¶</a></h3>
-<p>Next we will copy the decompressed directory to webserver root:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+<p>If we found the archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup_$month-date-year.tar.gz</span></code> containng Nextcloud config, data and theme dir. We need to decompress this directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_directory_backup_$month-date-year.tar.gz
+</pre></div>
+</div>
+<p>Then, we copy the decompressed directory to webserver root:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_directory_backup_$month-date-year/ $path/to/webserver/document-root/nextcloud/
 </pre></div>
 </div>
 </div>
@@ -266,11 +293,7 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 </pre></div>
 </div>
 <p>Now we use the following command to restore the database:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_$month-date-year.dump
-</pre></div>
-</div>
-<p>We have one task left to do which is deleting the <code class="docutils literal"><span class="pre">.dump</span></code> file from the <code class="docutils literal"><span class="pre">nextcloud</span></code> directory in webserver. We put the <code class="docutils literal"><span class="pre">.dump</span></code> in the same directory as <code class="docutils literal"><span class="pre">nextcloud</span></code> backup directory for the convenience of archiving but keeping it in the webserver is a big NO NO. So let’s delete the <code class="docutils literal"><span class="pre">.dump</span></code> file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rm path/to/webserver/document-root/nextcloud/nextcloud_$month-date-year.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_databese_backup_$month-date-year.dump
 </pre></div>
 </div>
 </div>
@@ -335,9 +358,11 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 <li><a class="reference internal" href="#enabling-ssl">Enabling SSL</a></li>
 <li><a class="reference internal" href="#backup">Backup</a><ul>
 <li><a class="reference internal" href="#turn-on-maintenance-mode">Turn on maintenance mode</a></li>
+<li><a class="reference internal" href="#make-a-backup-directory">Make a backup directory</a></li>
 <li><a class="reference internal" href="#backup-folders">Backup folders</a></li>
 <li><a class="reference internal" href="#backup-database">Backup database</a></li>
-<li><a class="reference internal" href="#compress-backup">Compress backup</a></li>
+<li><a class="reference internal" href="#compress-full-backup">Compress full backup</a></li>
+<li><a class="reference internal" href="#turn-off-maintenance-mode">Turn off maintenance mode</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#restore">Restore</a><ul>

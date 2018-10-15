@@ -298,6 +298,7 @@ Add the following at the bottom::
     RENDER_COMMAND = "rst2html.py --no-raw"
     IS_INPUT_FILE = false
 
+Now save the file and restart the gitea service.
 
 Source
 ------
