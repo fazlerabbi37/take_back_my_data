@@ -1,6 +1,6 @@
 Avro Pad
 ========
-`AvroPad<https://avro.im/>`_ is a full featured Avro Phonetic application with dictionary support. AvroPad can be used as an alternatives to:
+`AvroPad <https://avro.im/>`_ is a full featured Avro Phonetic application with dictionary support. AvroPad can be used as an alternatives to:
 
 - Bijoy Bangla
 
