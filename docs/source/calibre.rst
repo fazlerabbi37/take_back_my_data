@@ -1,14 +1,21 @@
-Calibre
+calibre
 =======
-This document describes the process of installing `calibre <https://calibre-ebook.com/>`_ in Ubuntu 16.04 LTS. Change the words with ``$`` like ``$username`` to your preference.
+`calibre <https://calibre-ebook.com/>`_ is a powerful and easy to use e-book manager. calibre can be used as an alternatives to:
 
-This document is based on or takes help from the following source(s):
+- GoodReads
 
-- `The calibre Content server <https://manual.calibre-ebook.com/server.html>`_
-- `How To Create a Calibre Ebook Server on Ubuntu 14.04 <https://www.digitalocean.com/community/tutorials/how-to-create-a-calibre-ebook-server-on-ubuntu-14-04>`_
-- `Download for Linux <https://calibre-ebook.com/download_linux>`_
-- `calibre-server <https://manual.calibre-ebook.com/generated/en/calibre-server.html>`_
+Build Status
+------------
+.. .. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
+.. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
+
+
+Installation
+------------
+This document describes the process of installing calibre in Ubuntu 16.04 LTS. Change the words with ``$`` like ``$username`` to your preference.
+
+This document is based on or takes help from the following 
 
 
 
@@ -22,11 +29,6 @@ This document is based on or takes help from the following source(s):
        sudo apt -y upgrade
 
        sudo apt install -y xdg-utils wget xz-utils python
-
-Build Status
-------------
-.. image:: https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg
-.. .. image:: https://img.shields.io/badge/Last%20Build-failed-red.svg
 
 Download calibre
 ----------------
@@ -46,3 +48,12 @@ Run the server
 To run the calibre server we need to use the following command::
 
     calibre-server --port $port_number
+
+Source
+------
+
+- `The calibre Content server <https://manual.calibre-ebook.com/server.html>`_
+- `How To Create a Calibre Ebook Server on Ubuntu 14.04 <https://www.digitalocean.com/community/tutorials/how-to-create-a-calibre-ebook-server-on-ubuntu-14-04>`_
+- `Download for Linux <https://calibre-ebook.com/download_linux>`_
+- `calibre-server <https://manual.calibre-ebook.com/generated/en/calibre-server.html>`_
+
