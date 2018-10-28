@@ -13,10 +13,11 @@
    nextcloud
    avro_pad
    gitea
+   drone
    conventions
    todo
 
-..   calibre
+.. calibre
    f-droid
    ftp
    openproject

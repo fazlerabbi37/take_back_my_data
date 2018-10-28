@@ -1,10 +1,10 @@
 F-Droid
 =======
+`F-Droid <https://f-droid.org/>`_ is an installable catalogue of FOSS (Free and Open Source Software) applications for the Android platform. F-Droid can be used as an alternatives to:
+
+- `Google Play <https://play.google.com>`_
+
 This document describes the process of installing F-Droid server in Ubuntu 16.04 LTS. Change the words with ``$`` like ``$username`` to your preference.
-
-This document is based on the following source:
-
-- `Setup an F-Droid App Repo <https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/>`_
 
 Build Status
 ------------
@@ -64,3 +64,9 @@ Now restart the apache service to see the change in effect. ::
     sudo systemctl restart apache2.service
 
 Now if we open the ``$f-droid_server_ip/fdroid/repo`` link in a browser we should see ``catagories.txt``, ``index.xml``, ``index.jar``, apks we put into ``repo`` directory and some icons directory. If everything is there we can now add this repo to our F-Droid android client by going to ``Settings`` > ``Repositories``.
+
+Source
+------
+
+- `Setup an F-Droid App Repo <https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/>`_
+

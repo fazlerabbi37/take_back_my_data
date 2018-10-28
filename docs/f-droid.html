@@ -23,6 +23,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FTP Server" href="ftp.html" />
+    <link rel="prev" title="calibre" href="calibre.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -39,11 +41,11 @@
             
   <div class="section" id="f-droid">
 <h1>F-Droid<a class="headerlink" href="#f-droid" title="Permalink to this headline">¶</a></h1>
-<p>This document describes the process of installing F-Droid server in Ubuntu 16.04 LTS. Change the words with <code class="docutils literal"><span class="pre">$</span></code> like <code class="docutils literal"><span class="pre">$username</span></code> to your preference.</p>
-<p>This document is based on the following source:</p>
+<p><a class="reference external" href="https://f-droid.org/">F-Droid</a> is an installable catalogue of FOSS (Free and Open Source Software) applications for the Android platform. F-Droid can be used as an alternatives to:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/">Setup an F-Droid App Repo</a></li>
+<li><a class="reference external" href="https://play.google.com">Google Play</a></li>
 </ul>
+<p>This document describes the process of installing F-Droid server in Ubuntu 16.04 LTS. Change the words with <code class="docutils literal"><span class="pre">$</span></code> like <code class="docutils literal"><span class="pre">$username</span></code> to your preference.</p>
 <div class="section" id="build-status">
 <h2>Build Status<a class="headerlink" href="#build-status" title="Permalink to this headline">¶</a></h2>
 <img alt="https://img.shields.io/badge/Last%20Build-failed-red.svg" src="https://img.shields.io/badge/Last%20Build-failed-red.svg" /></div>
@@ -100,6 +102,12 @@ fdroid update
 </div>
 <p>Now if we open the <code class="docutils literal"><span class="pre">$f-droid_server_ip/fdroid/repo</span></code> link in a browser we should see <code class="docutils literal"><span class="pre">catagories.txt</span></code>, <code class="docutils literal"><span class="pre">index.xml</span></code>, <code class="docutils literal"><span class="pre">index.jar</span></code>, apks we put into <code class="docutils literal"><span class="pre">repo</span></code> directory and some icons directory. If everything is there we can now add this repo to our F-Droid android client by going to <code class="docutils literal"><span class="pre">Settings</span></code> &gt; <code class="docutils literal"><span class="pre">Repositories</span></code>.</p>
 </div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://f-droid.org/en/docs/Setup_an_F-Droid_App_Repo/">Setup an F-Droid App Repo</a></li>
+</ul>
+</div>
 </div>
 
 
@@ -114,6 +122,7 @@ fdroid update
 <li><a class="reference internal" href="#build-status">Build Status</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#source">Source</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +130,8 @@ fdroid update
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="calibre.html" title="previous chapter">calibre</a></li>
+      <li>Next: <a href="ftp.html" title="next chapter">FTP Server</a></li>
   </ul></li>
 </ul>
 </div>

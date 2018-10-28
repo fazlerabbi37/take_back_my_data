@@ -1,0 +1,267 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Drone &#8212; Take Back My Data 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Document writing conventions" href="conventions.html" />
+    <link rel="prev" title="Gitea installation" href="gitea.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="drone">
+<h1>Drone<a class="headerlink" href="#drone" title="Permalink to this headline">¶</a></h1>
+<p>Drone is continues integration tool like Travis CI. In this document we will install Drone and integrate with Gitea.</p>
+<div class="section" id="build-status">
+<h2>Build Status<a class="headerlink" href="#build-status" title="Permalink to this headline">¶</a></h2>
+<img alt="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" src="https://img.shields.io/badge/Last%20Build-passing-brightgreen.svg" /></div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This part of the document describes the process of installing Drone in Ubuntu 16.04 LTS.</p>
+<div class="section" id="install-the-necessary-packages">
+<h3>Install the necessary packages<a class="headerlink" href="#install-the-necessary-packages" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Let’s first use the following commands to update and upgrade packages.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">We need to install <code class="docutils literal"><span class="pre">docker-ce</span></code>.</p>
+</li>
+</ol>
+<ul>
+<li><p class="first">To start we will remove <code class="docutils literal"><span class="pre">docker</span></code> if it is already installed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">remove</span> <span class="n">docker</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make sure you have the following package installed to move forward:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span> <span class="n">ca</span><span class="o">-</span><span class="n">certificates</span> <span class="n">curl</span> <span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add Docker’s official GPG key:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">fsSL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">gpg</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set up the stable docker repository:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="s2">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update the repo:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the latest version of Docker CE:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<ol class="arabic simple" start="3">
+<li>Now we will install <code class="docutils literal"><span class="pre">docker-compose</span></code></li>
+</ol>
+<ul>
+<li><p class="first">Download the latest version of Docker Compose:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="s2">&quot;https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make it executable:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="pull-the-drone-image">
+<h3>Pull the drone image<a class="headerlink" href="#pull-the-drone-image" title="Permalink to this headline">¶</a></h3>
+<p>We will pull the drone docker image to our host machine.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">pull</span> <span class="n">drone</span><span class="o">/</span><span class="n">drone</span><span class="p">:</span><span class="mf">0.8</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Now we will create a <code class="docutils literal"><span class="pre">docker-compose.yaml</span></code> file with all the configuration to run drone. We will open <code class="docutils literal"><span class="pre">docker-compose.yaml</span></code> with our favourite editor:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nano</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>Now paste the following to create the basic configuration:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>version: &#39;2&#39;
+
+services:
+  drone-server:
+    image: drone/drone:0.8
+
+    ports:
+      - 8000
+      - 9000
+    volumes:
+      - drone-server-data:/var/lib/drone/
+    restart: always
+    environment:
+      - DRONE_OPEN=false
+      - DRONE_HOST=${DRONE_HOST}
+      - DRONE_SECRET=${DRONE_SECRET}
+
+  drone-agent:
+    image: drone/agent:0.8
+
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_SERVER=drone-server:9000
+      - DRONE_SECRET=${DRONE_SECRET}
+
+volumes:
+  drone-server-data:
+</pre></div>
+</div>
+<p>We can do a lot more tweak in the <code class="docutils literal"><span class="pre">docker-compose.ymal</span></code> file which can be found in the <a class="reference external" href="http://docs.drone.io/installation/">Drone Docs: Installation Overview</a>.</p>
+<p>Thought Drone supports GitHub, GitLab, Gitea, Gogs, Bitbucket Cloud, Bitbucket Server and Coding but in this document we will configure Gitea to run with Drone. The configuration for other git web service can be found in the <a class="reference external" href="http://docs.drone.io/installation/">Drone Docs: Integrations</a>. For Gitea integration we simply need to add two <code class="docutils literal"><span class="pre">environment</span></code> variable bellow <code class="docutils literal"><span class="pre">DRONE_HOST</span></code> variable.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">DRONE_GITEA</span><span class="o">=</span><span class="n">true</span>
+<span class="o">-</span> <span class="n">DRONE_GITEA_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">gitea_url</span><span class="o">.</span><span class="n">ltd</span><span class="p">:</span><span class="n">port</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="customization">
+<h2>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h2>
+<p>We can customize the drone to use it only in private mode and set Drone admin user.</p>
+<div class="section" id="gitea-private-mode">
+<h3>Gitea private mode<a class="headerlink" href="#gitea-private-mode" title="Permalink to this headline">¶</a></h3>
+<p>If Gitea installation is running in private mode we can run our Drone in private mode as welli by adding the following bellow <code class="docutils literal"><span class="pre">DRONE_GITEA_URL</span></code> variable:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">DRONE_GITEA_PRIVATE_MODE</span><span class="o">=</span><span class="n">true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gitea-admin">
+<h3>Gitea admin<a class="headerlink" href="#gitea-admin" title="Permalink to this headline">¶</a></h3>
+<p>We can define Gitea admin user(s). Only those who are added as Gitea admin can login into Drone. To add Drone admin add <code class="docutils literal"><span class="pre">DRONE_ADMIN</span></code> variable under <code class="docutils literal"><span class="pre">DRONE_GITEA_URL</span></code> as well:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>- DRONE_ADMIN=$user_name
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">Get Docker CE for Ubuntu</a></li>
+<li><a class="reference external" href="https://docs.docker.com/compose/install/">Install Docker Compose</a></li>
+<li><a class="reference external" href="http://docs.drone.io/installation/">Installation Overview</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Drone</a><ul>
+<li><a class="reference internal" href="#build-status">Build Status</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#install-the-necessary-packages">Install the necessary packages</a></li>
+<li><a class="reference internal" href="#pull-the-drone-image">Pull the drone image</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#customization">Customization</a><ul>
+<li><a class="reference internal" href="#gitea-private-mode">Gitea private mode</a></li>
+<li><a class="reference internal" href="#gitea-admin">Gitea admin</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gitea.html" title="previous chapter">Gitea installation</a></li>
+      <li>Next: <a href="conventions.html" title="next chapter">Document writing conventions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/drone.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Fazle Rabbi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/drone.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
