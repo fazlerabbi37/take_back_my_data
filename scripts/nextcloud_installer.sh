@@ -49,10 +49,8 @@ sudo rm -rf $web_server_root/nextcloud.tar.bz2
 
 #database configuration
 #ask for PostgreSQL database user
-#read -p "Enter the name of PostgreSQL database user: " psql_username
-#read -sp "Enter the password of PostgreSQL database user: " psql_password
-psql_username=map_server
-psql_password=pathaomap
+read -p "Enter the name of PostgreSQL database user: " psql_username
+read -sp "Enter the password of PostgreSQL database user: " psql_password
 
 #do psql staff
 sudo -u postgres psql -c "CREATE USER $psql_username WITH PASSWORD '$psql_password';"
