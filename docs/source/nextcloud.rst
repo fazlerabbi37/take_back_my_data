@@ -43,11 +43,11 @@ We can see while we are writing this documentation we have 13.0.1 of Nextcloud a
 
 5. To move Nextcloud to you web server document root use this command. ::
 
-    sudo cp -r nextcloud /$path/to/webserver/document-root
+    sudo cp -r nextcloud $path_to_webserver_document_root
 
 6. Change the owner of ``nextcloud`` directory to ``www-data`` ::
 
-    sudo chown -R www-data:www-data /$path/to/webserver/document-root/nextcloud/
+    sudo chown -R www-data:www-data $path_to_webserver_document_root/nextcloud
 
 Database configuration
 ``````````````````````
@@ -76,9 +76,9 @@ Now we need to configure Apache Web Server. We will need to create a conf file f
 
 Now paste the following on that file::
 
-    Alias /nextcloud "/$path/to/webserver/document-root/nextcloud"
+    Alias /nextcloud "$path_to_webserver_document_root/nextcloud"
 
-    <Directory /$path/to/webserver/document-root/nextcloud/>
+    <Directory $path_to_webserver_document_root>
       Options +FollowSymlinks
       AllowOverride All
 
@@ -86,8 +86,8 @@ Now paste the following on that file::
       Dav off
      </IfModule>
 
-     SetEnv HOME /$path/to/webserver/document-root/nextcloud
-     SetEnv HTTP_HOME /$path/to/webserver/document-root/nextcloud
+     SetEnv HOME $path_to_webserver_document_root/nextcloud
+     SetEnv HTTP_HOME $path_to_webserver_document_root/nextcloud
 
     </Directory>
 
@@ -114,7 +114,7 @@ We can go to the installation wizard by using our preferred browser and typing `
 
 1. At the top of the page we will be asked for user name and password for creating an admin account. Enter a good user name and strong password.
 
-2. Next we have ``Data Folder`` which we can keep the default to ``$path/to/webserver/document-root/nextcloud/data`` to change to some other directory.
+2. Next we have ``Data Folder`` which we can keep the default to ``$path_to_webserver_document_root/nextcloud/data`` to change to some other directory.
 
 3. Next comes the database configuration. We need to give the user name, password and database from the `Database configuration`_.
 
@@ -140,7 +140,7 @@ If it isn’t installed in a subfolder.::
 
 Finally run this occ-command to update your .htaccess file::
 
-    sudo -u www-data php /var/www/nextcloud/occ maintenance:update:htaccess
+    sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:update:htaccess
 
 After each update, these changes are automatically applied to the .htaccess-file
 
@@ -170,39 +170,49 @@ Turn on maintenance mode
 ````````````````````````
 ``maintenance:mode`` locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run ``occ`` as the HTTP user, like this example::
 
-    sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
+    sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:mode --on
 
 Make a backup directory
 ```````````````````````
 We will make a temporery backup directory where we will story the backup files and directorys until we make a single ``.tar`` archive from them.::
 
-    mkdir $path/of/backup/nextcloud_`date +"%d-%b-%Y"`
+    mkdir $path_to_backup/nextcloud_`date +"%d-%b-%Y"`
+
+Change directory::
+
+    cd $path_to_backup/nextcloud_`date +"%d-%b-%Y"`
 
 Backup folders
 ``````````````
 Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command::
 
-    sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
+    sudo rsync -Aax $path_to_webserver_document_root/nextcloud/ nextcloud_directory_backup/
+
+We need to change the file and directory ownership to our current user so that we can compress the directory.::
+
+    sudo chown -R $USER:$USER nextcloud_directory_backup
 
 Now compress the directory backup and make a ``.tar`` file::
 
-    tar -zcvf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`.tar.gz $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
+    tar -zcvf nextcloud_directory_backup.tar.gz nextcloud_directory_backup/
 
-After the archiving is successfully complete we can delete the ``nextcloud_directory_backup_`date +"%d-%b-%Y"`/`` directory::
+After the archiving is successfully complete we can delete the ``nextcloud_directory_backup`` directory::
 
-    rm -rf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_directory_backup_`date +"%d-%b-%Y"`/
+    rm -rf nextcloud_directory_backup/
 
 Backup database
 ```````````````
 Now we will backup the PostgreSQL database::
 
-    PGPASSWORD="$password" pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/nextcloud_databese_backup_`date +"%d-%b-%Y"`.dump
+    PGPASSWORD="$password" pg_dump nextcloud -h localhost -U $username -f nextcloud_databese_backup.dump
 
 Compress full backup
 ````````````````````
 Finally, we will bundle the directory backup archive with the database backup and make it a single ``.tar`` file::
 
-    tar -zcvf $path/of/backup/nextcloud_`date +"%d-%b-%Y"`.tar.gz $path/of/backup/nextcloud_`date +"%d-%b-%Y"`/
+    cd ..
+    tar -zcvf nextcloud_`date +"%d-%b-%Y"`.tar.gz nextcloud_`date +"%d-%b-%Y"`/
+
 
 And we are done with backup!
 
@@ -210,7 +220,7 @@ Turn off maintenance mode
 `````````````````````````
 Run the following command to turn off maintenance mode::
 
-    sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --off
+    sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:mode --off
 
 
 Restore
@@ -224,34 +234,56 @@ To restore a Nextcloud installation there are four main things you need to resto
 
 .. note:: You must have both the database and data directory. You cannot complete restoration unless you have both of these.
 
-Decompress backup (if you have any)
-```````````````````````````````````
-Assuming we have a made a compressed backup archive following `Compress backup`_ and want to restore that, we need to Decompress the backup archive.::
+Decompress backup
+`````````````````
+Assuming we have a made a compressed backup archive following `Compress full backup`_ and want to restore that, we need to Decompress the backup archive.::
 
-    tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
+    tar -xvzf $path_to_backup/nextcloud_$month-date-year.tar.gz
 
-At this step, we should see one archive named ``nextcloud_directory_backup_$month-date-year.tar.gz`` and a database dump named ``nextcloud_databese_backup``.
+At this step, we should see one directory named ``nextcloud_$month-date-year`` which should contain one archive named ``nextcloud_directory_backup.tar.gz`` and a database dump named ``nextcloud_databese_backup``.
 
 Restore folders
 ```````````````
-If we found the archive named ``nextcloud_directory_backup_$month-date-year.tar.gz`` containng Nextcloud config, data and theme dir. We need to decompress this directory::
+We should found the archive named ``nextcloud_directory_backup.tar.gz`` inside the ``nextcloud_$month-date-year`` which contains Nextcloud ``config``, ``data`` and ``theme`` directory. We need to decompress this directory::
 
-    tar -xvzf $path/of/backup/nextcloud_directory_backup_$month-date-year.tar.gz
+    tar -xvzf nextcloud_$month-date-year/nextcloud_directory_backup.tar.gz -C nextcloud_$month-date-year/
 
 Then, we copy the decompressed directory to webserver root::
 
-    sudo rsync -Aax nextcloud_directory_backup_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+    sudo rsync -Aax nextcloud_$month-date-year/nextcloud_directory_backup/ $path_to_webserver_document_root/nextcloud/
+
+Finally, we need to change file and directory ownership to our web user::
+
+    sudo chown -R www-data:www-data $path_to_webserver_document_root/nextcloud
 
 Restore database
 ````````````````
-To restore database we need to delete the old database and create a new one where the backup one will be restored.::
+To restore database we need to delete the old database and create a new one where the backup one will be restored. After deleting the existing database we will perform the same action that we did in `Database configuration`_ section.::
 
-    PGPASSWORD="$password" psql -h localhost -U $username -d nextcloud -c "DROP DATABASE \"nextcloud\";"
-    PGPASSWORD="$password" psql -h localhost -U $username -d nextcloud -c "CREATE DATABASE \"nextcloud\";"
+    sudo -u postgres psql
 
+Then a ``postgres=#`` prompt will appear. Now enter the following lines and confirm them with the enter key. First we will delete the existing ``nextcloud`` database::
+
+    DROP DATABASE nextcloud;
+
+We are assuming the database user is already created as it is restoration process, if not or we want to create a PostgreSQL user::
+    
+    CREATE USER $username WITH PASSWORD '$password';
+
+Now create the new ``nextcloud`` database and allow permission::
+
+    CREATE DATABASE nextcloud TEMPLATE template0 ENCODING 'UNICODE';
+    ALTER DATABASE nextcloud OWNER TO $username;
+    GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
+
+You can quit the prompt by entering::
+
+    \q
+
+.. note:: not sure
 Now we use the following command to restore the database::
 
-    PGPASSWORD="$password" pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_databese_backup_$month-date-year.dump
+    PGPASSWORD="$password" psql -d nextcloud -h localhost -U $username < nextcloud_$month-date-year/nextcloud_databese_backup.dump
 
 
 
@@ -263,14 +295,14 @@ We will be configuring a Gmail account as SMTP mail server. Navigate to ``Settin
 
 * In ``Sent mode`` we will select ``SMTP``
 * In ``Encryption`` we will  select ``SSL/TLS``
-* In ``From address`` we will enter Gmail username in ``mail`` before the ``@`` sign and ``gmail.com`` in ``example.com`` after the ``@`` sign.  
+* In ``From address`` we will enter Gmail username in ``mail`` before the ``@`` sign and ``gmail.com`` in ``example.com`` after the ``@`` sign.
 * In ``Authentication`` we will select ``Login`` and Put check mark on 'Authentication required'
 * In ``Server address`` we will enter ``smtp.gmail.com:465``
 * In ``Credentials`` we have two parts ``SMTP Username`` and ``SMTP Password``
     - In ``SMTP Username`` we will put our Gmail username
-    - In ``SMTP Password`` we will put our Gmail password [If the Gmail account has 2FA enable see this `link <https://support.google.com/accounts/answer/185833?hl=en>`_ to make an app password]. 
+    - In ``SMTP Password`` we will put our Gmail password [If the Gmail account has 2FA enable see this `link <https://support.google.com/accounts/answer/185833?hl=en>`_ to make an app password].
 
-Now click on ``Store credentials`` and click on ``Send email`` to sent a test mail. 
+Now click on ``Store credentials`` and click on ``Send email`` to sent a test mail.
 
 
 
