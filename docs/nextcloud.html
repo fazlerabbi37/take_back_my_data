@@ -81,12 +81,12 @@
 </div>
 </li>
 <li><p class="first">To move Nextcloud to you web server document root use this command.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo cp -r nextcloud /$path/to/webserver/document-root
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo cp -r nextcloud $path_to_webserver_document_root
 </pre></div>
 </div>
 </li>
 <li><p class="first">Change the owner of <code class="docutils literal"><span class="pre">nextcloud</span></code> directory to <code class="docutils literal"><span class="pre">www-data</span></code></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data /$path/to/webserver/document-root/nextcloud/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data $path_to_webserver_document_root/nextcloud
 </pre></div>
 </div>
 </li>
@@ -118,9 +118,9 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 <p>Now paste the following on that file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>Alias /nextcloud &quot;/$path/to/webserver/document-root/nextcloud&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span>Alias /nextcloud &quot;$path_to_webserver_document_root/nextcloud&quot;
 
-&lt;Directory /$path/to/webserver/document-root/nextcloud/&gt;
+&lt;Directory $path_to_webserver_document_root&gt;
   Options +FollowSymlinks
   AllowOverride All
 
@@ -128,8 +128,8 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
   Dav off
  &lt;/IfModule&gt;
 
- SetEnv HOME /$path/to/webserver/document-root/nextcloud
- SetEnv HTTP_HOME /$path/to/webserver/document-root/nextcloud
+ SetEnv HOME $path_to_webserver_document_root/nextcloud
+ SetEnv HTTP_HOME $path_to_webserver_document_root/nextcloud
 
 &lt;/Directory&gt;
 </pre></div>
@@ -156,7 +156,7 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <p>We can go to the installation wizard by using our preferred browser and typing <code class="docutils literal"><span class="pre">http://$server_ip/nextcloud</span></code> on the address bar. On successful installation we should see the Nextcloud Installation Wizard. We need to follow this steps to finish installation.</p>
 <ol class="arabic simple">
 <li>At the top of the page we will be asked for user name and password for creating an admin account. Enter a good user name and strong password.</li>
-<li>Next we have <code class="docutils literal"><span class="pre">Data</span> <span class="pre">Folder</span></code> which we can keep the default to <code class="docutils literal"><span class="pre">$path/to/webserver/document-root/nextcloud/data</span></code> to change to some other directory.</li>
+<li>Next we have <code class="docutils literal"><span class="pre">Data</span> <span class="pre">Folder</span></code> which we can keep the default to <code class="docutils literal"><span class="pre">$path_to_webserver_document_root/nextcloud/data</span></code> to change to some other directory.</li>
 <li>Next comes the database configuration. We need to give the user name, password and database from the <a class="reference internal" href="#database-configuration">Database configuration</a>.</li>
 </ol>
 <ol class="arabic simple" start="4">
@@ -178,7 +178,7 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 </pre></div>
 </div>
 <p>Finally run this occ-command to update your .htaccess file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">php</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">nextcloud</span><span class="o">/</span><span class="n">occ</span> <span class="n">maintenance</span><span class="p">:</span><span class="n">update</span><span class="p">:</span><span class="n">htaccess</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:update:htaccess
 </pre></div>
 </div>
 <p>After each update, these changes are automatically applied to the .htaccess-file</p>
@@ -204,43 +204,52 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <div class="section" id="turn-on-maintenance-mode">
 <h3>Turn on maintenance mode<a class="headerlink" href="#turn-on-maintenance-mode" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">maintenance:mode</span></code> locks the sessions of logged-in users and prevents new logins in order to prevent inconsistencies of data. We must run <code class="docutils literal"><span class="pre">occ</span></code> as the HTTP user, like this example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --on
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:mode --on
 </pre></div>
 </div>
 </div>
 <div class="section" id="make-a-backup-directory">
 <h3>Make a backup directory<a class="headerlink" href="#make-a-backup-directory" title="Permalink to this headline">¶</a></h3>
 <p>We will make a temporery backup directory where we will story the backup files and directorys until we make a single <code class="docutils literal"><span class="pre">.tar</span></code> archive from them.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>mkdir $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`
+<div class="highlight-default"><div class="highlight"><pre><span></span>mkdir $path_to_backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`
+</pre></div>
+</div>
+<p>Change directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd $path_to_backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`
 </pre></div>
 </div>
 </div>
 <div class="section" id="backup-folders">
 <h3>Backup folders<a class="headerlink" href="#backup-folders" title="Permalink to this headline">¶</a></h3>
 <p>Simply copy config, data and theme folders (or even our whole Nextcloud install and data folder) to a place outside of our Nextcloud environment. We can use this command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax $path/to/webserver/document-root/nextcloud/ $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax $path_to_webserver_document_root/nextcloud/ nextcloud_directory_backup/
+</pre></div>
+</div>
+<p>We need to change the file and directory ownership to our current user so that we can compress the directory.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo chown -R $USER:$USER nextcloud_directory_backup
 </pre></div>
 </div>
 <p>Now compress the directory backup and make a <code class="docutils literal"><span class="pre">.tar</span></code> file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">zcvf</span> <span class="n">nextcloud_directory_backup</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="n">nextcloud_directory_backup</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>After the archiving is successfully complete we can delete the <code class="docutils literal"><span class="pre">nextcloud_directory_backup_`date</span> <span class="pre">+&quot;%d-%b-%Y&quot;`/</span></code> directory:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>rm -rf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_directory_backup_`date +&quot;%d-%b-%Y&quot;`/
+<p>After the archiving is successfully complete we can delete the <code class="docutils literal"><span class="pre">nextcloud_directory_backup</span></code> directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">nextcloud_directory_backup</span><span class="o">/</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="backup-database">
 <h3>Backup database<a class="headerlink" href="#backup-database" title="Permalink to this headline">¶</a></h3>
 <p>Now we will backup the PostgreSQL database:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/nextcloud_databese_backup_`date +&quot;%d-%b-%Y&quot;`.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_dump nextcloud -h localhost -U $username -f nextcloud_databese_backup.dump
 </pre></div>
 </div>
 </div>
 <div class="section" id="compress-full-backup">
 <h3>Compress full backup<a class="headerlink" href="#compress-full-backup" title="Permalink to this headline">¶</a></h3>
 <p>Finally, we will bundle the directory backup archive with the database backup and make it a single <code class="docutils literal"><span class="pre">.tar</span></code> file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>tar -zcvf $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz $path/of/backup/nextcloud_`date +&quot;%d-%b-%Y&quot;`/
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd ..
+tar -zcvf nextcloud_`date +&quot;%d-%b-%Y&quot;`.tar.gz nextcloud_`date +&quot;%d-%b-%Y&quot;`/
 </pre></div>
 </div>
 <p>And we are done with backup!</p>
@@ -248,7 +257,7 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <div class="section" id="turn-off-maintenance-mode">
 <h3>Turn off maintenance mode<a class="headerlink" href="#turn-off-maintenance-mode" title="Permalink to this headline">¶</a></h3>
 <p>Run the following command to turn off maintenance mode:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path/to/webserver/document-root/nextcloud/occ maintenance:mode --off
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo -u www-data php $path_to_webserver_document_root/nextcloud/occ maintenance:mode --off
 </pre></div>
 </div>
 </div>
@@ -266,34 +275,59 @@ GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
 <p class="first admonition-title">Note</p>
 <p class="last">You must have both the database and data directory. You cannot complete restoration unless you have both of these.</p>
 </div>
-<div class="section" id="decompress-backup-if-you-have-any">
-<h3>Decompress backup (if you have any)<a class="headerlink" href="#decompress-backup-if-you-have-any" title="Permalink to this headline">¶</a></h3>
-<p>Assuming we have a made a compressed backup archive following <a href="#id3"><span class="problematic" id="id4">`Compress backup`_</span></a> and want to restore that, we need to Decompress the backup archive.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_$month-date-year.tar.gz
+<div class="section" id="decompress-backup">
+<h3>Decompress backup<a class="headerlink" href="#decompress-backup" title="Permalink to this headline">¶</a></h3>
+<p>Assuming we have a made a compressed backup archive following <a class="reference internal" href="#compress-full-backup">Compress full backup</a> and want to restore that, we need to Decompress the backup archive.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path_to_backup/nextcloud_$month-date-year.tar.gz
 </pre></div>
 </div>
-<p>At this step, we should see one archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup_$month-date-year.tar.gz</span></code> and a database dump named <code class="docutils literal"><span class="pre">nextcloud_databese_backup</span></code>.</p>
+<p>At this step, we should see one directory named <code class="docutils literal"><span class="pre">nextcloud_$month-date-year</span></code> which should contain one archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup.tar.gz</span></code> and a database dump named <code class="docutils literal"><span class="pre">nextcloud_databese_backup</span></code>.</p>
 </div>
 <div class="section" id="restore-folders">
 <h3>Restore folders<a class="headerlink" href="#restore-folders" title="Permalink to this headline">¶</a></h3>
-<p>If we found the archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup_$month-date-year.tar.gz</span></code> containng Nextcloud config, data and theme dir. We need to decompress this directory:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf $path/of/backup/nextcloud_directory_backup_$month-date-year.tar.gz
+<p>We should found the archive named <code class="docutils literal"><span class="pre">nextcloud_directory_backup.tar.gz</span></code> inside the <code class="docutils literal"><span class="pre">nextcloud_$month-date-year</span></code> which contains Nextcloud <code class="docutils literal"><span class="pre">config</span></code>, <code class="docutils literal"><span class="pre">data</span></code> and <code class="docutils literal"><span class="pre">theme</span></code> directory. We need to decompress this directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>tar -xvzf nextcloud_$month-date-year/nextcloud_directory_backup.tar.gz -C nextcloud_$month-date-year/
 </pre></div>
 </div>
 <p>Then, we copy the decompressed directory to webserver root:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_directory_backup_$month-date-year/ $path/to/webserver/document-root/nextcloud/
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo rsync -Aax nextcloud_$month-date-year/nextcloud_directory_backup/ $path_to_webserver_document_root/nextcloud/
+</pre></div>
+</div>
+<p>Finally, we need to change file and directory ownership to our web user:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo chown -R www-data:www-data $path_to_webserver_document_root/nextcloud
 </pre></div>
 </div>
 </div>
 <div class="section" id="restore-database">
 <h3>Restore database<a class="headerlink" href="#restore-database" title="Permalink to this headline">¶</a></h3>
-<p>To restore database we need to delete the old database and create a new one where the backup one will be restored.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;DROP DATABASE \&quot;nextcloud\&quot;;&quot;
-PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c &quot;CREATE DATABASE \&quot;nextcloud\&quot;;&quot;
+<p>To restore database we need to delete the old database and create a new one where the backup one will be restored. After deleting the existing database we will perform the same action that we did in <a class="reference internal" href="#database-configuration">Database configuration</a> section.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
 </pre></div>
 </div>
+<p>Then a <code class="docutils literal"><span class="pre">postgres=#</span></code> prompt will appear. Now enter the following lines and confirm them with the enter key. First we will delete the existing <code class="docutils literal"><span class="pre">nextcloud</span></code> database:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">DATABASE</span> <span class="n">nextcloud</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>We are assuming the database user is already created as it is restoration process, if not or we want to create a PostgreSQL user:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>CREATE USER $username WITH PASSWORD &#39;$password&#39;;
+</pre></div>
+</div>
+<p>Now create the new <code class="docutils literal"><span class="pre">nextcloud</span></code> database and allow permission:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>CREATE DATABASE nextcloud TEMPLATE template0 ENCODING &#39;UNICODE&#39;;
+ALTER DATABASE nextcloud OWNER TO $username;
+GRANT ALL PRIVILEGES ON DATABASE nextcloud TO $username;
+</pre></div>
+</div>
+<p>You can quit the prompt by entering:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>\<span class="n">q</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">not sure</p>
+</div>
 <p>Now we use the following command to restore the database:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; pg_restore -c -d nextcloud -h localhost -U $username $path/of/backup/nextcloud_$month-date-year/nextcloud_databese_backup_$month-date-year.dump
+<div class="highlight-default"><div class="highlight"><pre><span></span>PGPASSWORD=&quot;$password&quot; psql -d nextcloud -h localhost -U $username &lt; nextcloud_$month-date-year/nextcloud_databese_backup.dump
 </pre></div>
 </div>
 </div>
@@ -366,7 +400,7 @@ PGPASSWORD=&quot;$password&quot; psql -h localhost -U $username -d nextcloud -c 
 </ul>
 </li>
 <li><a class="reference internal" href="#restore">Restore</a><ul>
-<li><a class="reference internal" href="#decompress-backup-if-you-have-any">Decompress backup (if you have any)</a></li>
+<li><a class="reference internal" href="#decompress-backup">Decompress backup</a></li>
 <li><a class="reference internal" href="#restore-folders">Restore folders</a></li>
 <li><a class="reference internal" href="#restore-database">Restore database</a></li>
 </ul>
