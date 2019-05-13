@@ -28,7 +28,7 @@ sudo chown root:git /etc/gitea
 sudo chmod 770 /etc/gitea
 
 
-#atabase installation
+#database installation
 sudo -v
 sudo apt update
 sudo apt install -y postgresql postgresql-contrib
